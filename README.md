@@ -18,6 +18,6 @@ To launch the app locally run `npm start`
 
 ## :hammer: Built With
 
-- [Node.js](https://nodejs.org/en/) - The backend
+- [Rocket](https://rocket.rs/) - The backend
 
 - [React.js](https://reactjs.org/) - The frontend framework
