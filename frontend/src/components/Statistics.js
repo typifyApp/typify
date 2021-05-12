@@ -3,6 +3,8 @@ import SpeedIcon from "@material-ui/icons/Speed";
 import ErrorIcon from "@material-ui/icons/Error";
 import TimerIcon from "@material-ui/icons/Timer";
 import CheckIcon from "@material-ui/icons/Check";
+import lightBlue from "@material-ui/core/colors/lightBlue";
+
 const Statistics = ({ statistics }) => {
   return (
     <CardContent>

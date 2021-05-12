@@ -1,5 +1,9 @@
 import { Card, CardContent, Typography, Box } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
+import teal from "@material-ui/core/colors/teal";
+import red from "@material-ui/core/colors/red";
+import grey from "@material-ui/core/colors/grey";
+
 import Statistics from "./Statistics";
 const useStyles = makeStyles({
   root: {
@@ -14,6 +18,15 @@ const useStyles = makeStyles({
   text: {
     fontSize: 20,
     fontFamily: "Ubuntu Mono",
+  },
+  textCorrect: {
+    color: teal[500],
+  },
+  textWrong: {
+    color: red[500],
+  },
+  textNotYet: {
+    color: grey[500],
   },
 });
 const Display = ({ typedText, textToType, statistics }) => {
@@ -41,15 +54,14 @@ const Display = ({ typedText, textToType, statistics }) => {
               <Typography
                 className={`${classes.text} ${
                   i === typedText.length ? "cursorBlink" : ""
+                } ${
+                  typedText.length <= i
+                    ? classes.textNotYet
+                    : typedText[i] === char
+                    ? classes.textCorrect
+                    : classes.textWrong
                 }`}
                 display="inline"
-                color={
-                  typedText.length <= i
-                    ? "textSecondary"
-                    : typedText[i] === char
-                    ? "primary"
-                    : "secondary"
-                }
               >
                 {char === " " ? "_" : char}{" "}
                 {char === " " && i !== 0 && lastSpace > 30
