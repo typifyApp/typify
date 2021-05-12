@@ -1,5 +1,9 @@
-import { Card, CardContent, Typography } from "@material-ui/core";
+import { Card, CardContent, Typography, Box } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
+import teal from "@material-ui/core/colors/teal";
+import red from "@material-ui/core/colors/red";
+import grey from "@material-ui/core/colors/grey";
+
 import Statistics from "./Statistics";
 const useStyles = makeStyles({
   root: {
@@ -15,15 +19,21 @@ const useStyles = makeStyles({
     fontSize: 20,
     fontFamily: "Ubuntu Mono",
   },
-  flash: {
-    fontSize: 40,
+  textCorrect: {
+    color: teal[500],
+  },
+  textWrong: {
+    color: red[500],
+  },
+  textNotYet: {
+    color: grey[500],
   },
 });
 const Display = ({ typedText, textToType, statistics }) => {
   const classes = useStyles();
   let lastSpace = 0;
   return (
-    <>
+    <Box lineHeight={4}>
       <Card>
         <CardContent>
           <Statistics statistics={statistics} />
@@ -43,16 +53,15 @@ const Display = ({ typedText, textToType, statistics }) => {
             {textToType.split("").map((char, i) => (
               <Typography
                 className={`${classes.text} ${
-                  i === typedText.length ? classes.flash : ""
+                  i === typedText.length ? "cursorBlink" : ""
+                } ${
+                  typedText.length <= i
+                    ? classes.textNotYet
+                    : typedText[i] === char
+                    ? classes.textCorrect
+                    : classes.textWrong
                 }`}
                 display="inline"
-                color={
-                  typedText.length <= i
-                    ? "textSecondary"
-                    : typedText[i] === char
-                    ? "primary"
-                    : "secondary"
-                }
               >
                 {char === " " ? "_" : char}{" "}
                 {char === " " && i !== 0 && lastSpace > 30
@@ -63,7 +72,7 @@ const Display = ({ typedText, textToType, statistics }) => {
           </Typography>
         </CardContent>
       </Card>
-    </>
+    </Box>
   );
 };
 
