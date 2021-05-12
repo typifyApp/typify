@@ -16,6 +16,7 @@ const shuffle = (words) => {
   return allWords.slice(0, 20).join(" ");
 };
 const App = () => {
+  const [lastSpace, setLastSpace] = useState(0);
   const [typedText, setTypedText] = useState("");
   const [textToType, setTextToType] = useState(shuffle(common100));
   const [statistics, setStatistics] = useState({
@@ -74,12 +75,14 @@ const App = () => {
         alignItems="center"
         justify="center"
       >
-        <Grid item xs={12} md={6}>
+        <Grid item xs={12}>
           <Display
             typedText={typedText}
             textToType={textToType}
             statistics={statistics}
             setStatistics={setStatistics}
+            lastSpace={lastSpace}
+            setLastSpace={setLastSpace}
           />
         </Grid>
       </Grid>

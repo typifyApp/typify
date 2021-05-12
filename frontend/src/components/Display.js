@@ -19,9 +19,9 @@ const useStyles = makeStyles({
     fontSize: 40,
   },
 });
-const Display = ({ typedText, textToType, statistics, setStatistics }) => {
+const Display = ({ typedText, textToType, statistics }) => {
   const classes = useStyles();
-
+  let lastSpace = 0;
   return (
     <>
       <Card>
@@ -55,7 +55,9 @@ const Display = ({ typedText, textToType, statistics, setStatistics }) => {
                 }
               >
                 {char === " " ? "_" : char}{" "}
-                {i !== 0 && i % 50 === 0 ? <br /> : ""}
+                {char === " " && i !== 0 && lastSpace > 30
+                  ? ((lastSpace = 0), (<br />))
+                  : (lastSpace++, "")}
               </Typography>
             ))}
           </Typography>
