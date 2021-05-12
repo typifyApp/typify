@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Grid } from "@material-ui/core";
+import { Grid, Box } from "@material-ui/core";
 import common100 from "./words/common100";
 import Header from "./components/Header";
 import Keyboard from "./components/Keyboard";
@@ -95,7 +95,13 @@ const App = () => {
         justify="center"
       >
         <Grid item xs={12}>
-          <Keyboard handleKeystroke={handleKeystroke} keys={keys} />
+          <Box
+            component={Grid}
+            item
+            display={{ xs: "none", md: "none", lg: "block" }}
+          >
+            <Keyboard handleKeystroke={handleKeystroke} keys={keys} />
+          </Box>
         </Grid>
       </Grid>
       <KeyboardEventHandler
