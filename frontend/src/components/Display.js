@@ -1,20 +1,9 @@
-import {
-  Card,
-  CardContent,
-  CardActions,
-  Button,
-  Typography,
-} from "@material-ui/core";
+import { Card, CardContent, Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-import red from "@material-ui/core/colors/red";
+import Statistics from "./Statistics";
 const useStyles = makeStyles({
   root: {
     minWidth: 275,
-  },
-  bullet: {
-    display: "inline-block",
-    margin: "0 2px",
-    transform: "scale(0.8)",
   },
   title: {
     fontSize: 14,
@@ -37,6 +26,7 @@ const Display = ({ typedText, textToType, statistics, setStatistics }) => {
     <>
       <Card>
         <CardContent>
+          <Statistics statistics={statistics} />
           <Typography
             className={classes.title}
             color="textSecondary"
@@ -71,7 +61,6 @@ const Display = ({ typedText, textToType, statistics, setStatistics }) => {
           </Typography>
         </CardContent>
       </Card>
-      <Card>{typedText}</Card>
     </>
   );
 };

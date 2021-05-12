@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Grid } from "@material-ui/core";
 import common100 from "./words/common100";
 import Header from "./components/Header";
 import Keyboard from "./components/Keyboard";
@@ -66,14 +67,34 @@ const App = () => {
   return (
     <>
       <Header />
-      <Statistics statistics={statistics} />
-      <Display
-        typedText={typedText}
-        textToType={textToType}
-        statistics={statistics}
-        setStatistics={setStatistics}
-      />
-      <Keyboard handleKeystroke={handleKeystroke} keys={keys} />
+      <Grid
+        container
+        spacing={0}
+        direction="column"
+        alignItems="center"
+        justify="center"
+      >
+        <Grid item xs={12} md={6}>
+          <Display
+            typedText={typedText}
+            textToType={textToType}
+            statistics={statistics}
+            setStatistics={setStatistics}
+          />
+        </Grid>
+      </Grid>
+
+      <Grid
+        container
+        spacing={0}
+        direction="column"
+        alignItems="center"
+        justify="center"
+      >
+        <Grid item xs={12}>
+          <Keyboard handleKeystroke={handleKeystroke} keys={keys} />
+        </Grid>
+      </Grid>
       <KeyboardEventHandler
         handleKeys={["alphabetic", "space"]}
         onKeyEvent={(key, e) => {
