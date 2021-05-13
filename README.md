@@ -8,7 +8,7 @@ A web app to help me practice typing common English words [Live App](https://j1m
 
 This web app can be ran locally after cloning or downloading the repo.  
 
-To install dependencies after cloning the repo run `yarn i`  
+To install dependencies after cloning the repo run `yarn install`  
 
 ### :electric_plug: Backend installation
 To compile the backend you need rust / cargo nightly.
@@ -19,11 +19,15 @@ rustup default nightly
 
 ### :keyboard: Usage
 
-To launch the app locally run `yarn start`
+To launch the app locally run the bash script `./run_stack.sh` 
 
 
 ### :hammer: Built With
 
 - [Rocket](https://rocket.rs/) - The backend
 
-- [React.js](https://reactjs.org/) - The frontend framework
+- [React.js](https://reactjs.org/) - The frontend library
+
+- [Material-UI](https://material-ui.com/) - Frontend UI framework
+
+- [Axios](https://github.com/axios/axios) - Http client for the frontend
