@@ -1,4 +1,5 @@
 use {
+    log::*,
     std::sync::atomic::{AtomicU64,Ordering},
     super::api_structs::*,
     super::serde_structs::*,
@@ -16,32 +17,55 @@ use {
 };
 
 #[post("/login", data = "<login_form>")]
-pub fn login(login_form : Json<LoginForm>, stats : State<ServerStats>, conn : SQLiteConnection) ->  String {
-    let mut default_login = LoginForm{
-        username : String::from(""),
-        password : String::from(""),
-    };
+pub fn login(login_form : Json<LoginForm>, conn : SQLiteConnection) -> Json<LoginResponse> {
     let mut stmt = conn.prepare(
-        r#"SELECT DISTINCT username, password 
+        r#"
+        SELECT DISTINCT username, password 
         FROM accounts
-        WHERE username=?1"#
+        WHERE username=?1
+        "#
     ).unwrap();
 
     let result = stmt.query_row(&[&login_form.username], |row| {
-        let password : String = row.get(1);
-        if  password == login_form.password {
-            Some(LoginForm{
+        let queried_password : String = row.get(1);
+        if  queried_password.eq(&login_form.password) {
+            info!("PASSWORD {} == {}",queried_password, login_form.password);
+        }
+        if queried_password.eq(&login_form.password) {
+            Ok(LoginForm {
                 username : row.get(0),
-                password : row.get(1),
+                password : queried_password,
             })
         } else {
-            None
+            Err(String::from("Incorrect password."))
         }
-    }).unwrap();
+    });
+    let result = match result {
+        Ok(found_table_entry) => {
+            found_table_entry
+        },
+        Err(e) => {
+            Err(format!("Database error: {}", e))
+        }
+    };
 
-    if let Some(login_data) = result {
-        format!("username : {}, password : {}", login_data.username,login_data.password)
-    } else {
-        format!("Cannot find user {}", login_form.username)
+    match result {
+        Ok(_accepted_login) => {
+            let response = LoginResponse{
+                response : String::from("Login accepted"),
+                cookie : String::from(""),
+                accepted : true,
+            };
+            Json(response)
+        },
+        Err(e) => {
+            info!("REJECT");
+            let response = LoginResponse{
+                response : String::from(format!("Login rejected for reason : {}", e)),
+                cookie : String::from(""),
+                accepted : false,
+            };
+            Json(response)
+        }
     }
 }
