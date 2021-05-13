@@ -75,7 +75,7 @@ const Display = ({
                 }`}
                 display="inline"
               >
-                {char === " " ? "_" : char}{" "}
+                {char === " " ? "␣" : char}{" "}
                 {char === " " && i !== 0 && lastSpace > 30
                   ? ((lastSpace = 0), (<br />))
                   : (lastSpace++, "")}

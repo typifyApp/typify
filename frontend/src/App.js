@@ -81,7 +81,7 @@ const App = () => {
   const resetWords = () => {
     const endTime = new Date();
     let timeDifferenceInSeconds = (endTime - statistics.startTime) / 1000;
-    let correctChars = textToType.length - statistics.errorsSoFar;
+    let correctChars = textToType.length - statistics.errorsSoFar - 1;
     let charsPerSecond = correctChars / timeDifferenceInSeconds;
     let charsPerMinute = charsPerSecond * 60;
     let wordsPerMinute = Math.round(charsPerMinute / 4.7);
