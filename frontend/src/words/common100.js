@@ -1,4 +1,4 @@
-export default [
+const common100 = [
   {
     rank: "1",
     word: "the",
@@ -400,3 +400,5 @@ export default [
     word: "us",
   },
 ];
+
+export default common100;

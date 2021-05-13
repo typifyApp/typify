@@ -3,6 +3,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import teal from "@material-ui/core/colors/teal";
 import red from "@material-ui/core/colors/red";
 import grey from "@material-ui/core/colors/grey";
+import orange from "@material-ui/core/colors/orange";
 
 import Statistics from "./Statistics";
 const useStyles = makeStyles({
@@ -28,8 +29,17 @@ const useStyles = makeStyles({
   textNotYet: {
     color: grey[500],
   },
+  textCorrected: {
+    color: orange[500],
+  },
 });
-const Display = ({ typedText, textToType, statistics }) => {
+const Display = ({
+  typedText,
+  textToType,
+  statistics,
+  recordError,
+  errorSet,
+}) => {
   const classes = useStyles();
   let lastSpace = 0;
   return (
@@ -49,7 +59,7 @@ const Display = ({ typedText, textToType, statistics }) => {
             20 words from the most common 100 english words
           </Typography>
 
-          <Typography display="inline" variant="body2" component="p">
+          <Typography display="inline">
             {textToType.split("").map((char, i) => (
               <Typography
                 className={`${classes.text} ${
@@ -58,13 +68,15 @@ const Display = ({ typedText, textToType, statistics }) => {
                   typedText.length <= i
                     ? classes.textNotYet
                     : typedText[i] === char
-                    ? classes.textCorrect
-                    : classes.textWrong
+                    ? errorSet.has(i)
+                      ? classes.textCorrected
+                      : classes.textCorrect
+                    : (recordError(i), classes.textWrong)
                 }`}
                 display="inline"
               >
-                {char === " " ? "_" : char}{" "}
-                {char === " " && i !== 0 && lastSpace > 30
+                {char === " " ? "␣" : char}
+                {char === " " && i !== 0 && lastSpace > 40
                   ? ((lastSpace = 0), (<br />))
                   : (lastSpace++, "")}
               </Typography>
