@@ -1,10 +1,13 @@
 import axios from "axios";
-const baseUrl = "http://localhost:8000/";
+const baseUrl = "http://localhost:8000";
 
 const login = async (username, password, setLoggedIn) => {
   await axios
     .post(`${baseUrl}/login`, { username, password })
-    .then((response) => setLoggedIn(true))
+    .then((response) => {
+      console.log(`Server response: ${response}`);
+      setLoggedIn(true);
+    })
     .catch((error) => console.log(`Error loggin in: ${error}`));
 };
 const loginDummy = async (username, password, setLoggedIn) => {

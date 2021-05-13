@@ -5,7 +5,7 @@ import common100 from "./words/common100";
 import Header from "./components/Header";
 import Login from "./components/Login";
 import Display from "./components/Display";
-import KeyboardEventHandler from "react-keyboard-event-handler";
+import KeyboardEventHandler, { propTypes } from "react-keyboard-event-handler";
 import { createMuiTheme } from "@material-ui/core/styles";
 import teal from "@material-ui/core/colors/teal";
 import lightBlue from "@material-ui/core/colors/lightBlue";
@@ -38,7 +38,9 @@ const shuffle = (words) => {
   return allWords.slice(0, 20).join(" ");
 };
 const App = () => {
-  const [loggedIn, setLoggedIn] = useState(false);
+  const [loggedIn, setLoggedIn] = useState(
+    process.env.REACT_APP_ENV === "development" ? true : false
+  );
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [lastSpace, setLastSpace] = useState(0);
@@ -120,7 +122,7 @@ const App = () => {
               setUsername={setUsername}
               password={password}
               setPassword={setPassword}
-              login={UserAdministration.loginDummy}
+              login={UserAdministration.login}
               register={UserAdministration.register}
               setLoggedIn={setLoggedIn}
             />
