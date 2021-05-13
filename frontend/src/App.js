@@ -24,6 +24,13 @@ const theme = createMuiTheme({
   text: {
     secondary: teal[500],
   },
+  typography: {
+    fontFamily: `'Montserrat', sans-serif;`,
+    fontSize: 14,
+    fontWeightLight: 300,
+    fontWeightRegular: 400,
+    fontWeightMedium: 500,
+  },
 });
 const shuffle = (words) => {
   // get first 20 of shuffled
@@ -97,7 +104,7 @@ const App = () => {
           justify="center"
           style={{ minHeight: "100vh" }}
         >
-          <Grid item xs={3}>
+          <Grid item xs={12} lg={3}>
             <Login
               username={username}
               setUsername={setUsername}

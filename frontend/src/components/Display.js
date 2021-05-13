@@ -34,7 +34,7 @@ const Display = ({ typedText, textToType, statistics }) => {
   let lastSpace = 0;
   return (
     <Box lineHeight={4}>
-      <Card>
+      <Card elevation={20}>
         <CardContent>
           <Statistics statistics={statistics} />
           <Typography
