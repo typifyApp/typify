@@ -25,7 +25,7 @@ where
     }
 }
 
-fn try_read_toml_file<'a, T>(path: &Path) -> Result<T, Box<dyn std::error::Error>>
+pub fn try_read_toml_file<'a, T>(path: &Path) -> Result<T, Box<dyn std::error::Error>>
 where
     for<'de> T: Deserialize<'de>,
 {
@@ -49,7 +49,7 @@ where
     }
 }
 
-fn try_write_toml_file<T>(config: &T, path: &Path) -> Result<(), Box<dyn std::error::Error>>
+pub fn try_write_toml_file<T>(config: &T, path: &Path) -> Result<(), Box<dyn std::error::Error>>
 where
     T: Serialize,
 {

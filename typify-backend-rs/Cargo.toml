@@ -13,7 +13,7 @@ url = { version = "2", features = ["serde"] }
 toml = "0.5.8"
 simple-logging = "2.0.2"
 rocket = "0.4.7"
-postgres = "0.19.1"
+postgres = "0.15"
 
 [dependencies.rocket_contrib]
 verion = "0.4.7"
