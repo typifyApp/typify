@@ -4,20 +4,25 @@ A web app to help me practice typing common English words [Live App](https://j1m
 
 
 ![](images/program.gif)  
-## :computer: Installation
+### :computer: Frontend installation
 
 This web app can be ran locally after cloning or downloading the repo.  
 
-To install dependencies after cloning the repo run `npm i`  
+To install dependencies after cloning the repo run `yarn i`  
 
-[How to build backend](rust-backend/README.md)
+### :electric_plug: Backend installation
+To compile the backend you need rust / cargo nightly.
+```
+rustup toolchain install nightly
+rustup default nightly
+```
 
-## :keyboard: Usage
+### :keyboard: Usage
 
-To launch the app locally run `npm start`
+To launch the app locally run `yarn start`
 
 
-## :hammer: Built With
+### :hammer: Built With
 
 - [Rocket](https://rocket.rs/) - The backend
 
