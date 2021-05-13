@@ -135,8 +135,9 @@ const App = () => {
             direction="column"
             alignItems="center"
             justify="center"
+            style={{ minHeight: "70vh" }}
           >
-            <Grid item xs={12}>
+            <Grid item xs={12} md={6}>
               <Display
                 typedText={typedText}
                 textToType={textToType}

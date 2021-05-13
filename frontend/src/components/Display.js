@@ -59,7 +59,7 @@ const Display = ({
             20 words from the most common 100 english words
           </Typography>
 
-          <Typography display="inline" variant="body2" component="p">
+          <Typography display="inline">
             {textToType.split("").map((char, i) => (
               <Typography
                 className={`${classes.text} ${
@@ -75,8 +75,8 @@ const Display = ({
                 }`}
                 display="inline"
               >
-                {char === " " ? "␣" : char}{" "}
-                {char === " " && i !== 0 && lastSpace > 30
+                {char === " " ? "␣" : char}
+                {char === " " && i !== 0 && lastSpace > 40
                   ? ((lastSpace = 0), (<br />))
                   : (lastSpace++, "")}
               </Typography>
