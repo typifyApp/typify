@@ -26,9 +26,9 @@ fn main() -> Result<(), Box<dyn std::error::Error>>{
     } else {
         simple_logging::log_to_stderr(LevelFilter::Warn);
     }
-    let stats = config::load_struct_toml::<ServerStats>()
+    let stats = load::load_struct_toml::<serde_structs::ServerStats>(std::path::Path::new("stats.toml"));
     rocket::ignite()
-        .manage(serde_structs::ServerStats::default())
+        .manage(stats)
         .mount("/", routes![login::login]).launch();
     Ok(())
 }
