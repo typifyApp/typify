@@ -1,16 +1,14 @@
 import { useState } from "react";
 import UserAdministration from "./services/UserAdministration";
-import { Grid, Box, ThemeProvider } from "@material-ui/core";
+import { Grid, ThemeProvider } from "@material-ui/core";
 import common100 from "./words/common100";
 import Header from "./components/Header";
-import Keyboard from "./components/Keyboard";
 import Login from "./components/Login";
 import Display from "./components/Display";
 import KeyboardEventHandler from "react-keyboard-event-handler";
 import { createMuiTheme } from "@material-ui/core/styles";
 import teal from "@material-ui/core/colors/teal";
 import lightBlue from "@material-ui/core/colors/lightBlue";
-const keys = "qwertyuiopasdfghjklzxcvbnm";
 
 const theme = createMuiTheme({
   palette: {
@@ -46,11 +44,22 @@ const App = () => {
   const [lastSpace, setLastSpace] = useState(0);
   const [typedText, setTypedText] = useState("");
   const [textToType, setTextToType] = useState(shuffle(common100));
+  const [errorSet, setErrorsSet] = useState(new Set());
+
   const [statistics, setStatistics] = useState({
     errorsSoFar: 0,
     errors: 0,
     startTime: null,
   });
+
+  const recordError = (errorIndex) => {
+    errorSet.add(errorIndex);
+  };
+
+  const handleBackspace = () => {
+    setTypedText(typedText.substring(0, typedText.length - 1));
+  };
+
   const handleKeystroke = (keyStroke) => {
     let currentCharIndex = typedText.length - 1;
     if (
@@ -86,6 +95,7 @@ const App = () => {
       correctChars,
     });
     setTextToType(shuffle(common100));
+    setErrorsSet(new Set());
   };
 
   if (typedText.length === textToType.length) {
@@ -134,6 +144,8 @@ const App = () => {
                 setStatistics={setStatistics}
                 lastSpace={lastSpace}
                 setLastSpace={setLastSpace}
+                recordError={recordError}
+                errorSet={errorSet}
               />
             </Grid>
           </Grid>
@@ -143,26 +155,21 @@ const App = () => {
             direction="column"
             alignItems="center"
             justify="center"
-          >
-            <Grid item xs={12}>
-              <Box
-                component={Grid}
-                item
-                display={{ xs: "none", md: "none", lg: "block" }}
-              >
-                <Keyboard handleKeystroke={handleKeystroke} keys={keys} />
-              </Box>
-            </Grid>
-          </Grid>
+          ></Grid>
           <KeyboardEventHandler
-            handleKeys={["alphabetic", "space"]}
+            handleKeys={["alphabetic", "space", "backspace"]}
             onKeyEvent={(key, e) => {
               switch (key) {
+                case "backspace":
+                  handleBackspace();
+                  break;
                 case "space":
-                  key = " ";
+                  handleKeystroke(" ");
+                  break;
+                default:
+                  handleKeystroke(key);
                   break;
               }
-              handleKeystroke(key);
             }}
           />
         </>
