@@ -10,12 +10,12 @@ log = { version = "0.4.11", features = ["std", "serde", "max_level_trace", "rele
 chrono = { version = "0.4", features = ["serde"] }
 serde = { version = "1.0", features = ["derive"] }
 url = { version = "2", features = ["serde"] }
+postgres = { version = "0.15", features = ["with-chrono"] }
 toml = "0.5.8"
 simple-logging = "2.0.2"
 rocket = "0.4.7"
-postgres = "0.15"
 
 [dependencies.rocket_contrib]
 verion = "0.4.7"
 default-features = false
-features = ["json"]
+features = ["json","postgres_pool"]

@@ -9,8 +9,12 @@ extern crate chrono;
 use {
     log::*,
     handlers::*,
-    rocket::config::{Config, Environment}
+    rocket::config::{Config, Environment},
+    rocket_contrib::databases::postgres,
 };
+
+#[database("typify")]
+struct PostgresDbConnection(postgres::Connection);
 
 mod handlers;
 mod logs;
@@ -21,14 +25,17 @@ mod constants;
 
 fn main() -> Result<(), Box<dyn std::error::Error>>{
     if cfg!(debug_assertions) {
-        logs::start_logger();
-        info!("Running in debug mode.");
+        //logs::start_logger();
+        simple_logging::log_to_stderr(LevelFilter::Info);
+        info!("Logger running in debug mode.");
     } else {
         simple_logging::log_to_stderr(LevelFilter::Warn);
     }
-    let stats = load::load_struct_toml::<serde_structs::ServerStats>(std::path::Path::new("stats.toml"));
+    let stats = load::load_struct_toml::<serde_structs::ServerStats>(std::path::Path::new("Stats.toml"));
     rocket::ignite()
         .manage(stats)
-        .mount("/", routes![login::login]).launch();
+        .mount("/", routes![login::login])
+        .attach(PostgresDbConnection::fairing())
+        .launch();
     Ok(())
 }
