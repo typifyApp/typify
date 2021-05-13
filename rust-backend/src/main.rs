@@ -10,11 +10,11 @@ use {
     log::*,
     handlers::*,
     rocket::config::{Config, Environment},
-    rocket_contrib::databases::postgres,
+    rocket_contrib::databases::rusqlite,
 };
 
 #[database("typify")]
-struct PostgresDbConnection(postgres::Connection);
+pub struct SQLiteConnection(rusqlite::Connection);
 
 mod handlers;
 mod logs;
@@ -35,7 +35,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>>{
     rocket::ignite()
         .manage(stats)
         .mount("/", routes![login::login])
-        .attach(PostgresDbConnection::fairing())
+        .attach(SQLiteConnection::fairing())
         .launch();
     Ok(())
 }

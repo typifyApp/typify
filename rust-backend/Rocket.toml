@@ -1,5 +1,5 @@
 [global.databases]
-typify = { url = "file://database/accounts" }
+typify = { url = "typify.sqlite" }
 
 [development]
 address = "localhost"

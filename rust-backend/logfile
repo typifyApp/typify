@@ -1,5 +1,0 @@
-2021-05-13 10:25:17.064 IST [7795] LOG:  starting PostgreSQL 13.2 on x86_64-pc-linux-gnu, compiled by gcc (GCC) 10.2.0, 64-bit
-2021-05-13 10:25:17.064 IST [7795] LOG:  listening on IPv6 address "::1", port 5432
-2021-05-13 10:25:17.064 IST [7795] LOG:  listening on IPv4 address "127.0.0.1", port 5432
-2021-05-13 10:25:17.066 IST [7795] FATAL:  could not create lock file "/run/postgresql/.s.PGSQL.5432.lock": No such file or directory
-2021-05-13 10:25:17.067 IST [7795] LOG:  database system is shut down

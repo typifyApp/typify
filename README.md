@@ -10,12 +10,7 @@ This web app can be ran locally after cloning or downloading the repo.
 
 To install dependencies after cloning the repo run `npm i`  
 
-### Backend installation
-To compile the backend you need rust / cargo nightly.
-```
-rustup toolchain install nightly
-rustup default nightly
-```
+[How to build backend](rust-backend/README.md)
 
 ## :keyboard: Usage
 
