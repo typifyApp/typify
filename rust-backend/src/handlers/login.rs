@@ -15,27 +15,33 @@ use {
     },
     rocket::response::{Response, Redirect, Flash},
     rocket::http::{
+        Header,
         Status,
         Cookie,
         ContentType
     },
 };
 
+#[derive(Responder)]
+pub struct MyJson {
+    inner : JsonValue,
+    pub cors : Header<'static>
+}
+
 #[options("/login")]
-pub fn login_option() -> String {
-    Response::build()
-    .header(
-    Allow(vec![
-        Method::Get,
-        Method::Post
-    ]))
-    .status(Status::new(200, "OK response"))
-    .finalize();
-    String::from("hello")
+pub fn login_option<'a>() -> Response<'a> {
+    let mut res = Response::new();
+    res.set_status(Status::new(200, "No Content"));
+    res.adjoin_header(ContentType::Plain);
+    res.adjoin_raw_header("Access-Control-Allow-Methods", "POST, GET, OPTIONS");
+    res.adjoin_raw_header("Access-Control-Allow-Origin", "*");
+    res.adjoin_raw_header("Access-Control-Allow-Credentials", "true");
+    res.adjoin_raw_header("Access-Control-Allow-Headers", "Content-Type");
+    res
 }
 
 #[post("/login", data = "<login_form>")]
-pub fn login_post(login_form : Json<LoginForm>, conn : SQLiteConnection) -> Json<LoginResponse> {
+pub fn login_post<'a>(login_form : Json<LoginForm>, conn : SQLiteConnection) -> MyJson {
     let mut stmt = conn.prepare(
         r#"
         SELECT DISTINCT username, password 
@@ -46,9 +52,6 @@ pub fn login_post(login_form : Json<LoginForm>, conn : SQLiteConnection) -> Json
 
     let result = stmt.query_row(&[&login_form.username], |row| {
         let queried_password : String = row.get(1);
-        if  queried_password.eq(&login_form.password) {
-            info!("PASSWORD {} == {}",queried_password, login_form.password);
-        }
         if queried_password.eq(&login_form.password) {
             Ok(LoginForm {
                 username : row.get(0),
@@ -67,14 +70,14 @@ pub fn login_post(login_form : Json<LoginForm>, conn : SQLiteConnection) -> Json
         }
     };
 
-    match result {
+    let mut response = match result {
         Ok(_accepted_login) => {
             let response = LoginResponse{
                 response : String::from("Login accepted"),
                 cookie : String::from(""),
                 accepted : true,
             };
-            Json(response)
+            json!(response)
         },
         Err(e) => {
             info!("REJECT");
@@ -83,7 +86,12 @@ pub fn login_post(login_form : Json<LoginForm>, conn : SQLiteConnection) -> Json
                 cookie : String::from(""),
                 accepted : false,
             };
-            Json(response)
+            json!(response)
         }
+    };
+    let header = Header::new("Access-Control-Allow-Origin", "*");
+    MyJson{
+        inner : response,
+        cors : header,
     }
 }
