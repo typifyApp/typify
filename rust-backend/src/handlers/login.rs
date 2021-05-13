@@ -8,7 +8,12 @@ use {
     rocket::request::Form,
     rocket_contrib::json::JsonValue,
     rocket::State,
-    rocket::response::{Redirect, Flash},
+    rocket::http::hyper::Method,
+    rocket::http::hyper::{
+        header::Headers,
+        header::Allow,
+    },
+    rocket::response::{Response, Redirect, Flash},
     rocket::http::{
         Status,
         Cookie,
@@ -16,8 +21,21 @@ use {
     },
 };
 
+#[options("/login")]
+pub fn login_option() -> String {
+    Response::build()
+    .header(
+    Allow(vec![
+        Method::Get,
+        Method::Post
+    ]))
+    .status(Status::new(200, "OK response"))
+    .finalize();
+    String::from("hello")
+}
+
 #[post("/login", data = "<login_form>")]
-pub fn login(login_form : Json<LoginForm>, conn : SQLiteConnection) -> Json<LoginResponse> {
+pub fn login_post(login_form : Json<LoginForm>, conn : SQLiteConnection) -> Json<LoginResponse> {
     let mut stmt = conn.prepare(
         r#"
         SELECT DISTINCT username, password 

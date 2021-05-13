@@ -32,7 +32,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>>{
     }
 
     rocket::ignite()
-        .mount("/", routes![login::login])
+        .mount("/", routes![login::login_post,login::login_option])
         .attach(SQLiteConnection::fairing())
         .launch();
     Ok(())
