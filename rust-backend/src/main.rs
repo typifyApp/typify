@@ -15,6 +15,7 @@ use {
     rocket::http::Method,
     rocket_cors::AllowedHeaders,
     rocket_cors::AllowedOrigins,
+    rocket_contrib::serve::StaticFiles,
 };
 
 #[database("typify")]
@@ -40,6 +41,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>>{
     rocket::ignite()
         .manage(rocket_cors::CorsOptions::default().to_cors().unwrap())
         .mount("/", routes![login::login_post,login::login_option,register::register_post,register::register_option])
+        .mount("/", StaticFiles::from("../frontend/build"))
         .attach(SQLiteConnection::fairing())
         .launch();
     Ok(())

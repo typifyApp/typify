@@ -21,4 +21,4 @@ data-encoding = "2.3.2"
 [dependencies.rocket_contrib]
 version = "0.4.7"
 default-features = false
-features = ["json","sqlite_pool"]
+features = ["json","sqlite_pool","serve"]
