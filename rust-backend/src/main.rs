@@ -38,10 +38,16 @@ fn main() -> Result<(), Box<dyn std::error::Error>>{
         simple_logging::log_to_stderr(LevelFilter::Warn);
     }
 
+    let static_file_dir = if cfg!(debug) {
+        StaticFiles::from("../frontend/build")
+    } else {
+        StaticFiles::from("public")
+    };
+
     rocket::ignite()
         .manage(rocket_cors::CorsOptions::default().to_cors().unwrap())
         .mount("/", routes![login::login_post,login::login_option,register::register_post,register::register_option])
-        .mount("/", StaticFiles::from("../frontend/build"))
+        .mount("/", static_file_dir)
         .attach(SQLiteConnection::fairing())
         .launch();
     Ok(())
