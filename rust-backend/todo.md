@@ -1,0 +1,3 @@
+- Sanitise SQL input in login::login_post
+- Create a system by which i can inject cors headers.
+- Sanitise registration input.
