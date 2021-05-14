@@ -18,9 +18,9 @@ rustup default nightly
 ```
 Api Documentation is [here](rust-backend/api_docs.md)
 
-### :keyboard: Usage
+### :keyboard: Full stack usage
 
-To launch the app locally run the bash script `./run_stack.sh` 
+To launch the app locally run the bash script `./run_stack.sh`
 
 ### :hammer: Built With
 
