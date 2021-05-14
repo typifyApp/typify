@@ -33,7 +33,7 @@ pub fn login_post<'a>(login_form : Json<LoginForm>, conn : SQLiteConnection, cor
         WHERE username=?1
         "#
     ).unwrap();
-
+    //test
     let result = stmt.query_row(&[&login_form.username], |row| {
         
         let queried_password : String = row.get(1);
