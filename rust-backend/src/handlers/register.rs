@@ -10,13 +10,20 @@ use {
     rocket::request::Form,
     rocket_contrib::json::JsonValue,
     rocket::State,
-    rocket::response::{Redirect, Flash},
+    rocket::response::{Response,Redirect, Flash},
+    rocket_cors::Responder,
+    rocket::response::status,
     rocket::http::{
         Status,
         Cookie,
         ContentType
     },
 };
+
+#[options("/register")]
+pub fn login_option(cors : rocket_cors::Guard<'_>) -> Responder<'_,status::Accepted<()>> {
+    cors.responder(status::Accepted(Some(())))
+}
 
 #[post("/register", data = "<register_form>")]
 pub fn register(register_form : Json<RegistrationForm>, conn : SQLiteConnection) ->  Json<RegistrationResponse> {
