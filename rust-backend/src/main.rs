@@ -39,7 +39,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>>{
 
     rocket::ignite()
         .manage(rocket_cors::CorsOptions::default().to_cors().unwrap())
-        .mount("/", routes![login::login_post,login::login_option,register::register])
+        .mount("/", routes![login::login_post,login::login_option,register::register_post,register::register_option])
         .attach(SQLiteConnection::fairing())
         .launch();
     Ok(())

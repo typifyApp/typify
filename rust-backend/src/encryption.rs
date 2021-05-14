@@ -4,8 +4,8 @@ use ring::rand::SecureRandom;
 use ring::{digest, pbkdf2, rand};
 use std::num::NonZeroU32;
 
-const ITER_COUNT : NonZeroU32 = NonZeroU32::new(5_000).unwrap();
-const CREDENTIAL_LEN: usize = digest::SHA512_OUTPUT_LEN;
+pub const ITER_COUNT : NonZeroU32 = NonZeroU32::new(5_000).unwrap();
+pub const CREDENTIAL_LEN: usize = digest::SHA512_OUTPUT_LEN;
 
 pub fn get_hash<'a>(input : &[u8]) -> ([u8; CREDENTIAL_LEN],[u8;CREDENTIAL_LEN]) {
     let rng = rand::SystemRandom::new();

@@ -13,6 +13,8 @@ use {
     rocket::response::{Response,Redirect, Flash},
     rocket_cors::Responder,
     rocket::response::status,
+    ring::rand::SecureRandom,
+    ring::{digest, pbkdf2, rand},
     rocket::http::{
         Status,
         Cookie,
@@ -21,18 +23,18 @@ use {
 };
 
 #[options("/register")]
-pub fn login_option(cors : rocket_cors::Guard<'_>) -> Responder<'_,status::Accepted<()>> {
+pub fn register_option(cors : rocket_cors::Guard<'_>) -> Responder<'_,status::Accepted<()>> {
     cors.responder(status::Accepted(Some(())))
 }
 
 #[post("/register", data = "<register_form>")]
-pub fn register(register_form : Json<RegistrationForm>, conn : SQLiteConnection) ->  Json<RegistrationResponse> {
+pub fn register_post(register_form : Json<RegistrationForm>, conn : SQLiteConnection, cors : rocket_cors::Guard<'_>) ->  Responder<Json<RegistrationResponse>> {
     let (salt,hash) = get_hash(register_form.username.as_bytes());
     
     let mut stmt = conn.prepare(
         r#"
         INSERT INTO accounts (username, user_id, password, salt)
-        VALUES (?1,?2,?3,?4); 
+        VALUES (?1,?2,?3,?4,?5); 
         "#
     ).unwrap();
     let encoded_salt = HEXUPPER.encode(&salt);
@@ -43,5 +45,5 @@ pub fn register(register_form : Json<RegistrationForm>, conn : SQLiteConnection)
         account_restoration_key : String::from(""),
         cookie : String::from(""),
     };
-    Json(response)
+    cors.responder(Json(response)) 
 }

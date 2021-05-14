@@ -25,7 +25,7 @@ pub fn login_option(cors : rocket_cors::Guard<'_>) -> Responder<'_,status::Accep
 }
 
 #[post("/login", data = "<login_form>")]
-pub fn login_post<'a>(login_form : Json<LoginForm>, conn : SQLiteConnection) -> MyJson {
+pub fn login_post<'a>(login_form : Json<LoginForm>, conn : SQLiteConnection, cors : rocket_cors::Guard<'_>) -> Responder<Json<LoginResponse>> {
     let mut stmt = conn.prepare(
         r#"
         SELECT DISTINCT username, password, salt
@@ -62,7 +62,7 @@ pub fn login_post<'a>(login_form : Json<LoginForm>, conn : SQLiteConnection) -> 
                 cookie : String::from(""),
                 accepted : true,
             };
-            json!(response)
+            Json(response)
         },
         Err(e) => {
             let response = LoginResponse{
@@ -70,13 +70,9 @@ pub fn login_post<'a>(login_form : Json<LoginForm>, conn : SQLiteConnection) -> 
                 cookie : String::from(""),
                 accepted : false,
             };
-            json!(response)
+            Json(response)
         }
     };
-
-    let header = Header::new("Access-Control-Allow-Origin", "*");
-    MyJson{
-        inner : response,
-        cors : header,
-    }
+    cors.responder(response)
 }
+    

@@ -16,11 +16,11 @@ To compile the backend you need rust / cargo nightly.
 rustup toolchain install nightly
 rustup default nightly
 ```
+Api Documentation is [here](rust-backend/api_docs.md)
 
 ### :keyboard: Usage
 
 To launch the app locally run `yarn start`
-
 
 ### :hammer: Built With
 
