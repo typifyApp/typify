@@ -23,6 +23,7 @@ pub struct RegistrationForm {
 
 #[derive(Serialize, Deserialize)]
 pub struct RegistrationResponse {
+    pub accepted : bool,
     pub account_restoration_key : String,
     pub cookie : String,
 }

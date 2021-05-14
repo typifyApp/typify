@@ -10,10 +10,13 @@ log = { version = "0.4.11", features = ["std", "serde", "max_level_trace", "rele
 chrono = { version = "0.4", features = ["serde"] }
 serde = { version = "1.0", features = ["derive"] }
 url = { version = "2", features = ["serde"] }
+rocket_cors = { version = "0.5.1", features = ["serialization"] }
 rusqlite = "0.14.0"
 toml = "0.5.8"
 simple-logging = "2.0.2"
+ring = "0.16.20"
 rocket = "0.4.7"
+data-encoding = "2.3.2"
 
 [dependencies.rocket_contrib]
 version = "0.4.7"
