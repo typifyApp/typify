@@ -1,5 +1,5 @@
 import axios from "axios";
-const baseUrl = "http://localhost:8000";
+const baseUrl = "http://localhost:8000/api";
 
 const login = async (
   username,
@@ -7,7 +7,8 @@ const login = async (
   setLoggedIn,
   setLoginPageErrorText,
   userData,
-  setUserData
+  setUserData,
+  setCompletedRound
 ) => {
   await axios
     .post(`${baseUrl}/login`, { username, password })
@@ -17,6 +18,7 @@ const login = async (
       if (data.accepted) {
         setUserData({ ...userData, username });
         setLoggedIn(data.accepted);
+        setCompletedRound(false);
       } else {
         setLoginPageErrorText(data.response);
       }
@@ -30,7 +32,8 @@ const register = async (
   setLoggedIn,
   setLoginPageErrorText,
   userData,
-  setUserData
+  setUserData,
+  setCompletedRound
 ) => {
   await axios
     .post(`${baseUrl}/register`, { username, password })
@@ -40,6 +43,7 @@ const register = async (
       if (data.accepted) {
         setUserData({ ...userData, username });
         setLoggedIn(data.accepted);
+        setCompletedRound(false);
       } else {
         setLoginPageErrorText(data.response);
       }

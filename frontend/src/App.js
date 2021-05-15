@@ -3,6 +3,7 @@ import UserAdministration from "./services/UserAdministration";
 import { Grid, ThemeProvider } from "@material-ui/core";
 import common100 from "./words/common100";
 import Header from "./components/Header";
+import Statistics from "./components/Statistics";
 import Login from "./components/Login";
 import Display from "./components/Display";
 import KeyboardEventHandler from "react-keyboard-event-handler";
@@ -37,30 +38,45 @@ const shuffle = (words) => {
   return allWords.slice(0, 20).join(" ");
 };
 const App = () => {
-  const [loggedIn, setLoggedIn] = useState(
-    process.env.REACT_APP_ENV === "development" ? true : false
-  );
+  const [loggedIn, setLoggedIn] = useState(false);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [lastSpace, setLastSpace] = useState(0);
   const [typedText, setTypedText] = useState("");
   const [textToType, setTextToType] = useState(shuffle(common100));
   const [errorSet, setErrorsSet] = useState(new Set());
+  const [corrrectedSet, setCorrectedSet] = useState(new Set());
+
   const [loginPageErrorText, setLoginPageErrorText] = useState("");
   const [userData, setUserData] = useState({});
+  const [skippedLogin, setSkippedLogin] = useState(false);
+  const [completedRound, setCompletedRound] = useState(false);
 
   const [statistics, setStatistics] = useState({
     errorsSoFar: 0,
     errors: 0,
     startTime: null,
+    corrected: 0,
   });
 
   const recordError = (errorIndex) => {
     errorSet.add(errorIndex);
   };
+  const recordCorrected = (correctedIndex) => {
+    corrrectedSet.add(correctedIndex);
+  };
 
   const handleBackspace = () => {
     setTypedText(typedText.substring(0, typedText.length - 1));
+    if (typedText.length <= 1) {
+      setStatistics({
+        ...statistics,
+        errors: 0,
+        errorsSoFar: 0,
+      });
+      setErrorsSet(new Set());
+      setCorrectedSet(new Set());
+    }
   };
 
   const handleKeystroke = (keyStroke) => {
@@ -96,9 +112,12 @@ const App = () => {
       wordsPerMinute,
       timeDifferenceInSeconds,
       correctChars,
+      corrected: corrrectedSet.size,
     });
     setTextToType(shuffle(common100));
     setErrorsSet(new Set());
+    setCompletedRound(true);
+    setCorrectedSet(new Set());
   };
 
   if (typedText.length === textToType.length) {
@@ -130,6 +149,8 @@ const App = () => {
               setLoginPageErrorText={setLoginPageErrorText}
               userData={userData}
               setUserData={setUserData}
+              setSkippedLogin={setSkippedLogin}
+              setCompletedRound={setCompletedRound}
             />
           </Grid>
         </Grid>
@@ -145,27 +166,30 @@ const App = () => {
             style={{ minHeight: "70vh" }}
           >
             <Grid item xs={12} md={6}>
-              <Display
-                typedText={typedText}
-                textToType={textToType}
-                statistics={statistics}
-                setStatistics={setStatistics}
-                lastSpace={lastSpace}
-                setLastSpace={setLastSpace}
-                recordError={recordError}
-                errorSet={errorSet}
-              />
+              {completedRound ? (
+                <Statistics
+                  statistics={statistics}
+                  skippedLogin={skippedLogin}
+                  setSkippedLogin={setSkippedLogin}
+                  setLoggedIn={setLoggedIn}
+                />
+              ) : (
+                <Display
+                  typedText={typedText}
+                  textToType={textToType}
+                  setStatistics={setStatistics}
+                  lastSpace={lastSpace}
+                  setLastSpace={setLastSpace}
+                  recordError={recordError}
+                  errorSet={errorSet}
+                  recordCorrected={recordCorrected}
+                  setCorrectedSet={setCorrectedSet}
+                />
+              )}
             </Grid>
           </Grid>
-          <Grid
-            container
-            spacing={0}
-            direction="column"
-            alignItems="center"
-            justify="center"
-          ></Grid>
           <KeyboardEventHandler
-            handleKeys={["alphabetic", "space", "backspace"]}
+            handleKeys={["alphabetic", "space", "backspace", "enter"]}
             onKeyEvent={(key, e) => {
               switch (key) {
                 case "backspace":
@@ -174,9 +198,14 @@ const App = () => {
                 case "space":
                   handleKeystroke(" ");
                   break;
-                default:
-                  handleKeystroke(key);
+                case "enter":
+                  setCompletedRound(false);
                   break;
+                default:
+                  if (completedRound) {
+                    break;
+                  }
+                  handleKeystroke(key);
               }
             }}
           />
