@@ -25,4 +25,4 @@ jobs:
 
       # Runs a single command using the runners shell
       - name: Run cargo test
-        run: cargo test --manifest-path rust-backend/Cargo.toml
+        run: cargo test +nightly --manifest-path rust-backend/Cargo.toml
