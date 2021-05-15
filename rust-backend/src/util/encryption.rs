@@ -5,6 +5,7 @@ use ring::{digest, pbkdf2, rand};
 use std::num::NonZeroU32;
 
 // Do not change unless you know what you ard doing.
+// Ideally dont ever change this.
 pub const ITER_COUNT : NonZeroU32 = NonZeroU32::new(5_000).unwrap();
 pub const CREDENTIAL_LEN: usize = digest::SHA512_OUTPUT_LEN;
 
