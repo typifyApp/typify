@@ -27,19 +27,9 @@ jobs:
         with:
           toolchain: nightly
           override: true
-      
-      - id: component
-        uses: actions-rs/components-nightly@v1
-        with:
-          target: x86_64-unknown-linux-gnu
-          component: clippy
-      - uses: actions-rs/toolchain@v1
-        with:
-          toolchain: ${{ steps.component.outputs.toolchain }}
-          override: true
 
       # Runs a single command using the runners shell
       - uses: actions-rs/cargo@v1
         with:
           command: test
-          arguments: +nightly --manifest-path rust-backend/Cargo.toml
+          args: +nightly --manifest-path rust-backend/Cargo.toml
