@@ -7,7 +7,13 @@ import {
   Button,
   Grid,
 } from "@material-ui/core";
+import { makeStyles } from "@material-ui/core/styles";
 
+const useStyles = makeStyles({
+  loginErrorText: {
+    color: "red",
+  },
+});
 const Login = ({
   login,
   register,
@@ -16,7 +22,12 @@ const Login = ({
   setUsername,
   setPassword,
   setLoggedIn,
+  loginPageErrorText,
+  setLoginPageErrorText,
+  userData,
+  setUserData,
 }) => {
+  const classes = useStyles();
   return (
     <Card elevation={20}>
       <CardContent>
@@ -69,17 +80,38 @@ const Login = ({
           mb={3}
           variant="contained"
           color="primary"
-          onClick={() => login(username, password, setLoggedIn)}
+          onClick={() =>
+            login(
+              username,
+              password,
+              setLoggedIn,
+              setLoginPageErrorText,
+              userData,
+              setUserData
+            )
+          }
         >
           Login
         </Button>
         <Button
           variant="contained"
           color="secondary"
-          onClick={() => register(username, password)}
+          onClick={() =>
+            register(
+              username,
+              password,
+              setLoggedIn,
+              setLoginPageErrorText,
+              userData,
+              setUserData
+            )
+          }
         >
           Register
         </Button>
+        <Typography className={classes.loginErrorText}>
+          {loginPageErrorText}
+        </Typography>
       </Box>
     </Card>
   );

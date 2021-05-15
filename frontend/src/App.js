@@ -5,7 +5,7 @@ import common100 from "./words/common100";
 import Header from "./components/Header";
 import Login from "./components/Login";
 import Display from "./components/Display";
-import KeyboardEventHandler, { propTypes } from "react-keyboard-event-handler";
+import KeyboardEventHandler from "react-keyboard-event-handler";
 import { createMuiTheme } from "@material-ui/core/styles";
 import teal from "@material-ui/core/colors/teal";
 import lightBlue from "@material-ui/core/colors/lightBlue";
@@ -34,7 +34,6 @@ const shuffle = (words) => {
   // get first 20 of shuffled
   const allWords = words.map((wordObject) => wordObject.word);
   allWords.sort((a, b) => 0.5 - Math.random());
-  console.log("allwords", allWords);
   return allWords.slice(0, 20).join(" ");
 };
 const App = () => {
@@ -47,6 +46,8 @@ const App = () => {
   const [typedText, setTypedText] = useState("");
   const [textToType, setTextToType] = useState(shuffle(common100));
   const [errorSet, setErrorsSet] = useState(new Set());
+  const [loginPageErrorText, setLoginPageErrorText] = useState("");
+  const [userData, setUserData] = useState({});
 
   const [statistics, setStatistics] = useState({
     errorsSoFar: 0,
@@ -125,12 +126,16 @@ const App = () => {
               login={UserAdministration.login}
               register={UserAdministration.register}
               setLoggedIn={setLoggedIn}
+              loginPageErrorText={loginPageErrorText}
+              setLoginPageErrorText={setLoginPageErrorText}
+              userData={userData}
+              setUserData={setUserData}
             />
           </Grid>
         </Grid>
       ) : (
         <>
-          <Header />
+          <Header userData={userData} />
           <Grid
             container
             spacing={0}
