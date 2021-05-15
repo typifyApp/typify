@@ -104,4 +104,4 @@ dist
 .tern-port
 
 # Final build directory
-/production-build
+/final_build

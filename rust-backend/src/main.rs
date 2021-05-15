@@ -28,21 +28,18 @@ mod models;
 mod util;
 
 fn main() -> Result<(), Box<dyn std::error::Error>>{
-    if cfg!(debug_assertions) {
-        //logs::log_to_file(1, false, constants::LOGS_DIR)
-        simple_logging::log_to_stderr(LevelFilter::Info);
-        info!("Logger running in debug mode.");
-    } else {
-        simple_logging::log_to_stderr(LevelFilter::Warn);
-    }
 
     let static_file_dir = if cfg!(debug_assertions) {
+        simple_logging::log_to_stderr(LevelFilter::Info);
+        info!("Logger running in debug mode.");
         StaticFiles::from("../frontend/build")
     } else {
+        simple_logging::log_to_stderr(LevelFilter::Warn);
         StaticFiles::from("public")
     };
     
     let cors = rocket_cors::CorsOptions::default()
+        .allowed_origins(AllowedOrigins::All)
         .send_wildcard(true).to_cors().unwrap();
 
     rocket::ignite() 
@@ -53,7 +50,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>>{
         register::register_post,
         register::register_option,
     ])
-    .mount("/public/", static_file_dir)
+    .mount("/", static_file_dir)
     .attach(SQLiteConnection::fairing())
     .launch();
     Ok(())

@@ -13,12 +13,6 @@ use {
 
 use data_encoding::HEXUPPER;
 
-#[derive(Responder)]
-pub struct MyJson {
-    inner : JsonValue,
-    pub cors : Header<'static>
-}
-
 #[options("/api/login")]
 pub fn login_option(cors : rocket_cors::Guard<'_>) -> Responder<'_,status::Accepted<()>> {
     cors.responder(status::Accepted(Some(())))
@@ -46,12 +40,12 @@ pub fn login_post<'a>(login_form : Json<models::login::LoginForm>, conn : SQLite
                 password : queried_password,
             })
         } else {
-            Err(String::from("Incorrect password."))
+            Err(String::from("Incorrect username or password."))
         }
     });
     let result = match result {
         Ok(found_table_entry) => found_table_entry,
-        Err(e) => Err(format!("Database error: {}", e)),
+        Err(_e) => Err(format!("Incorrect username or password.")),
     };
 
     let response = match result {
@@ -65,7 +59,7 @@ pub fn login_post<'a>(login_form : Json<models::login::LoginForm>, conn : SQLite
         },
         Err(e) => {
             let response = models::login::LoginResponse{
-                response : String::from(format!("Login rejected for reason : {}", e)),
+                response : String::from(format!("{}", e)),
                 cookie : String::from(""),
                 accepted : false,
             };
