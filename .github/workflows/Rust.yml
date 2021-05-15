@@ -37,10 +37,6 @@ jobs:
         with:
           toolchain: ${{ steps.component.outputs.toolchain }}
           override: true
-      - uses: actions-rs/cargo@v1
-        with:
-          command: clippy
-          args: -- -D warnings
 
       # Runs a single command using the runners shell
       - name: Run cargo test
