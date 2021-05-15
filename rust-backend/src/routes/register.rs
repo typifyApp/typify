@@ -30,8 +30,10 @@ pub fn register_option(cors : rocket_cors::Guard<'_>) -> Responder<'_,status::Ac
 pub fn register_post(register_form : Json<models::register::RegistrationForm>, conn : SQLiteConnection, cors : rocket_cors::Guard<'_>) ->  Responder<Json<models::register::RegistrationResponse>> {
     //Create the 64 byte restoration key from random nums.
     let restoration_key = "test";
-    let (key_salt,key_hash) = encryption::get_hash(restoration_key.as_bytes());
-    let (salt,hash) = encryption::get_hash(register_form.username.as_bytes());
+    let key_salt = encryption::gen_random_salt();
+    let key_hash = encryption::gen_hash(restoration_key.as_bytes(),&key_salt);
+    let salt = encryption::gen_random_salt();
+    let hash = encryption::gen_hash(register_form.username.as_bytes(),&salt);
     
     let mut stmt = conn.prepare(
         r#"
