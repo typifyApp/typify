@@ -19,12 +19,12 @@ pub struct MyJson {
     pub cors : Header<'static>
 }
 
-#[options("/login")]
+#[options("/api/login")]
 pub fn login_option(cors : rocket_cors::Guard<'_>) -> Responder<'_,status::Accepted<()>> {
     cors.responder(status::Accepted(Some(())))
 }
 
-#[post("/login", data = "<login_form>")]
+#[post("/api/login", data = "<login_form>")]
 pub fn login_post<'a>(login_form : Json<models::login::LoginForm>, conn : SQLiteConnection, cors : rocket_cors::Guard<'_>) -> Responder<Json<models::login::LoginResponse>> {
     let mut stmt = conn.prepare(
         r#"
@@ -35,7 +35,6 @@ pub fn login_post<'a>(login_form : Json<models::login::LoginForm>, conn : SQLite
     ).unwrap();
     //test
     let result = stmt.query_row(&[&login_form.username], |row| {
-        
         let queried_password : String = row.get(1);
         let salt_string : String = row.get(2);
         let hash = HEXUPPER.decode(queried_password.as_bytes()).unwrap();

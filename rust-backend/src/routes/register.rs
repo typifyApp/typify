@@ -21,12 +21,12 @@ use {
     },
 };
 
-#[options("/register")]
+#[options("/api/register")]
 pub fn register_option(cors : rocket_cors::Guard<'_>) -> Responder<'_,status::Accepted<()>> {
     cors.responder(status::Accepted(Some(())))
 }
 
-#[post("/register", data = "<register_form>")]
+#[post("/api/register", data = "<register_form>")]
 pub fn register_post(register_form : Json<models::register::RegistrationForm>, conn : SQLiteConnection, cors : rocket_cors::Guard<'_>) ->  Responder<Json<models::register::RegistrationResponse>> {
     //Create the 64 byte restoration key from random nums.
     let restoration_key = "test";
@@ -36,7 +36,7 @@ pub fn register_post(register_form : Json<models::register::RegistrationForm>, c
     let mut stmt = conn.prepare(
         r#"
         INSERT INTO accounts (username, user_id, password, salt,restoration_key,restoration_key_salt)
-        VALUES (?1,?2,?3,?4,?5,?6); 
+        VALUES (?1,?2,?3,?4,?5,?6);
         "#
     ).unwrap();
     let encoded_salt = HEXUPPER.encode(&salt);

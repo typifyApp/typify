@@ -53,7 +53,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>>{
         register::register_post,
         register::register_option,
     ])
-    .mount("/", static_file_dir)
+    .mount("/public/", static_file_dir)
     .attach(SQLiteConnection::fairing())
     .launch();
     Ok(())

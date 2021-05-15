@@ -1,6 +1,6 @@
 # Backend api documentation
 
-## POST /login
+## POST /api/login
 Send :
 ```json
 {
@@ -13,8 +13,22 @@ Recieve :
 {
     "accepted": bool,
     "response": "<Error message or Login accepted>",
-    "cookie": ""
+    "json_token": ""
 }
 ```
-## POST /register
-
+## POST /api/register
+Send :
+```json
+{
+    "username" : "<username>",
+    "password" : "<password>"
+}
+```
+Recieve :
+```json
+{
+    "accepted": bool,
+    "account_restoration_key" : "<key>",
+    "json_token" : "",
+}
+```
