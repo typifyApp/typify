@@ -1,1 +1,0 @@
-pub const LOGS_DIR: &str = "logs";

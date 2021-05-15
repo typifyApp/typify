@@ -1,10 +1,9 @@
 
 use {
     std::sync::atomic::{AtomicU64,Ordering},
-    super::api_structs::*,
-    super::serde_structs::*,
+    super::models,
     super::SQLiteConnection,
-    super::encryption::*,
+    super::util::*,
     data_encoding::*,
     rocket_contrib::json::Json,
     rocket::request::Form,
@@ -28,11 +27,11 @@ pub fn register_option(cors : rocket_cors::Guard<'_>) -> Responder<'_,status::Ac
 }
 
 #[post("/register", data = "<register_form>")]
-pub fn register_post(register_form : Json<RegistrationForm>, conn : SQLiteConnection, cors : rocket_cors::Guard<'_>) ->  Responder<Json<RegistrationResponse>> {
+pub fn register_post(register_form : Json<models::register::RegistrationForm>, conn : SQLiteConnection, cors : rocket_cors::Guard<'_>) ->  Responder<Json<models::register::RegistrationResponse>> {
     //Create the 64 byte restoration key from random nums.
     let restoration_key = "test";
-    let (key_salt,key_hash) = get_hash(restoration_key.as_bytes());
-    let (salt,hash) = get_hash(register_form.username.as_bytes());
+    let (key_salt,key_hash) = encryption::get_hash(restoration_key.as_bytes());
+    let (salt,hash) = encryption::get_hash(register_form.username.as_bytes());
     
     let mut stmt = conn.prepare(
         r#"
@@ -45,7 +44,7 @@ pub fn register_post(register_form : Json<RegistrationForm>, conn : SQLiteConnec
     let encoded_key_salt = HEXUPPER.encode(&key_salt);
     let encoded_key_hash = HEXUPPER.encode(&key_hash);
     stmt.execute(&[&register_form.username,&0,&encoded_hash,&encoded_salt,&encoded_key_hash,&encoded_key_salt]).unwrap();
-    let response = RegistrationResponse{
+    let response = models::register::RegistrationResponse{
         accepted : true,
         account_restoration_key : String::from(restoration_key),
         cookie : String::from(""),

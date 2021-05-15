@@ -1,8 +1,8 @@
 use {
     log::*,
-    super::api_structs::*,
+    super::models,
     super::SQLiteConnection,
-    super::encryption::*,
+    super::util::*,
     rocket_contrib::json::Json,
     rocket_cors::Responder,
     rocket_contrib::json::JsonValue,
@@ -25,7 +25,7 @@ pub fn login_option(cors : rocket_cors::Guard<'_>) -> Responder<'_,status::Accep
 }
 
 #[post("/login", data = "<login_form>")]
-pub fn login_post<'a>(login_form : Json<LoginForm>, conn : SQLiteConnection, cors : rocket_cors::Guard<'_>) -> Responder<Json<LoginResponse>> {
+pub fn login_post<'a>(login_form : Json<models::login::LoginForm>, conn : SQLiteConnection, cors : rocket_cors::Guard<'_>) -> Responder<Json<models::login::LoginResponse>> {
     let mut stmt = conn.prepare(
         r#"
         SELECT DISTINCT username, password, salt
@@ -41,8 +41,8 @@ pub fn login_post<'a>(login_form : Json<LoginForm>, conn : SQLiteConnection, cor
         let hash = HEXUPPER.decode(queried_password.as_bytes()).unwrap();
         let salt = HEXUPPER.decode(salt_string.as_bytes()).unwrap();
 
-        if check_hash(&hash, &salt, login_form.password.as_bytes()) {
-            Ok(LoginForm {
+        if encryption::check_hash(&hash, &salt, login_form.password.as_bytes()) {
+            Ok(models::login::LoginForm {
                 username : row.get(0),
                 password : queried_password,
             })
@@ -57,7 +57,7 @@ pub fn login_post<'a>(login_form : Json<LoginForm>, conn : SQLiteConnection, cor
 
     let response = match result {
         Ok(_accepted_login) => {
-            let response = LoginResponse{
+            let response = models::login::LoginResponse{
                 response : String::from("Login accepted"),
                 cookie : String::from(""),
                 accepted : true,
@@ -65,7 +65,7 @@ pub fn login_post<'a>(login_form : Json<LoginForm>, conn : SQLiteConnection, cor
             Json(response)
         },
         Err(e) => {
-            let response = LoginResponse{
+            let response = models::login::LoginResponse{
                 response : String::from(format!("Login rejected for reason : {}", e)),
                 cookie : String::from(""),
                 accepted : false,
