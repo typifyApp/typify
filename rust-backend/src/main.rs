@@ -28,10 +28,9 @@ mod models;
 mod util;
 
 fn main() -> Result<(), Box<dyn std::error::Error>>{
-
+    
     let static_file_dir = if cfg!(debug_assertions) {
         simple_logging::log_to_stderr(LevelFilter::Info);
-        info!("Logger running in debug mode.");
         StaticFiles::from("../frontend/build")
     } else {
         simple_logging::log_to_stderr(LevelFilter::Warn);
