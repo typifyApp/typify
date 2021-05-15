@@ -21,8 +21,7 @@ echo ">> Building backend..."
 echo ">> Copying built files into $build_dir"
 cp rust-backend/target/release/rust-backend $build_dir/$binary
 cp rust-backend/Rocket.toml $build_dir/Rocket.toml
-cp rust-backend/gen_fresh_database.sh $build_dir/gen_fresh_database.sh
-cp rust-backend/run.sh $build_dir/run.sh
+#cp rust-backend/run.sh $build_dir/run.sh
 cp -r frontend/build $build_dir/$static_file_dir
 chmod +x $build_dir/$binary
 
