@@ -1,6 +1,6 @@
 # This is a basic workflow to help you get started with Actions
 
-name: rust
+name: rust-backend
 
 # Controls when the action will run. 
 on:
@@ -28,6 +28,11 @@ jobs:
           toolchain: nightly
           override: true
 
+      - uses: actions-rs/cargo@v1
+        with:
+          command: build
+          args: --manifest-path rust-backend/Cargo.toml
+        
       # Runs a single command using the runners shell
       - uses: actions-rs/cargo@v1
         with:
