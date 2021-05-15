@@ -13,6 +13,9 @@ const useStyles = makeStyles({
   loginErrorText: {
     color: "red",
   },
+  button: {
+    marginBottom: "10px",
+  },
 });
 const Login = ({
   login,
@@ -26,6 +29,8 @@ const Login = ({
   setLoginPageErrorText,
   userData,
   setUserData,
+  setSkippedLogin,
+  setCompletedRound,
 }) => {
   const classes = useStyles();
   return (
@@ -76,39 +81,59 @@ const Login = ({
             </Grid>
           </Grid>
         </Box>
-        <Button
-          mb={3}
-          variant="contained"
-          color="primary"
-          onClick={() =>
-            login(
-              username,
-              password,
-              setLoggedIn,
-              setLoginPageErrorText,
-              userData,
-              setUserData
-            )
-          }
-        >
-          Login
-        </Button>
-        <Button
-          variant="contained"
-          color="secondary"
-          onClick={() =>
-            register(
-              username,
-              password,
-              setLoggedIn,
-              setLoginPageErrorText,
-              userData,
-              setUserData
-            )
-          }
-        >
-          Register
-        </Button>
+        <Box display="flex" flexDirection="column" m={1}>
+          <Button
+            className={classes.button}
+            mb={3}
+            variant="contained"
+            color="primary"
+            onClick={() =>
+              login(
+                username,
+                password,
+                setLoggedIn,
+                setLoginPageErrorText,
+                userData,
+                setUserData,
+                setSkippedLogin,
+                setCompletedRound
+              )
+            }
+          >
+            Login
+          </Button>
+          <Button
+            className={classes.button}
+            variant="contained"
+            color="secondary"
+            onClick={() =>
+              register(
+                username,
+                password,
+                setLoggedIn,
+                setLoginPageErrorText,
+                userData,
+                setUserData,
+                setSkippedLogin,
+                setCompletedRound
+              )
+            }
+          >
+            Register
+          </Button>
+          <Button
+            className={classes.button}
+            variant="contained"
+            color="textSecondary"
+            onClick={() => {
+              setSkippedLogin(true);
+              setLoggedIn(true);
+              setCompletedRound(false);
+            }}
+          >
+            Skip
+          </Button>
+        </Box>
         <Typography className={classes.loginErrorText}>
           {loginPageErrorText}
         </Typography>
