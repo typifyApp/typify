@@ -38,40 +38,20 @@ fn main() -> Result<(), Box<dyn std::error::Error>>{
         simple_logging::log_to_stderr(LevelFilter::Warn);
     }
 
-    let static_file_dir = if cfg!(debug) {
+    let static_file_dir = if cfg!(debug_assertions) {
         StaticFiles::from("../frontend/build")
     } else {
         StaticFiles::from("public")
     };
+    
+    let cors = rocket_cors::CorsOptions::default()
+        .send_wildcard(true).to_cors().unwrap();
 
-    rocket::ignite()
-        .manage(rocket_cors::CorsOptions::default().to_cors().unwrap())
-        .mount("/", routes![login::login_post,login::login_option,register::register_post,register::register_option])
-        .mount("/", static_file_dir)
-        .attach(SQLiteConnection::fairing())
-        .launch();
+    rocket::ignite() 
+    .manage(cors)
+    .mount("/", routes![login::login_post,login::login_option,register::register_post,register::register_option])
+    .mount("/", static_file_dir)
+    .attach(SQLiteConnection::fairing())
+    .launch();
     Ok(())
 }
-
-// Default cors options for OPTIONS requests to any
-    // uri
-    /*
-    let allowed_origins = AllowedOrigins::All;
-    let cors_options = rocket_cors::CorsOptions {
-        allowed_origins,
-        allowed_methods: vec![Method::Get, Method::Post, Method::Delete]
-            .into_iter()
-            .map(From::from)
-            .collect(),
-        allowed_headers: AllowedHeaders::all(),
-        allow_credentials: true,
-        expose_headers: ["Content-Type", "X-Custom"]
-            .iter()
-            .map(ToString::to_string)
-            .collect(),
-        max_age: Some(42),
-        send_wildcard: false,
-        fairing_route_base: "/mycors".to_string(),
-        fairing_route_rank: 0,
-    };
-    */
