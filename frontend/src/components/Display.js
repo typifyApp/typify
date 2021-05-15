@@ -62,6 +62,8 @@ const Display = ({
           <Typography display="inline">
             {textToType.split("").map((char, i) => (
               <Typography
+                component={"span"}
+                key={i}
                 className={`${classes.text} ${
                   i === typedText.length ? "cursorBlink" : ""
                 } ${
