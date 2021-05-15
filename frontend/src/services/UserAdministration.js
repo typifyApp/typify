@@ -1,28 +1,54 @@
 import axios from "axios";
 const baseUrl = "http://localhost:8000";
 
-const login = async (username, password, setLoggedIn) => {
+const login = async (
+  username,
+  password,
+  setLoggedIn,
+  setLoginPageErrorText,
+  userData,
+  setUserData
+) => {
   await axios
     .post(`${baseUrl}/login`, { username, password })
     .then((response) => {
-      console.log(`Server response: ${response}`);
-      setLoggedIn(true);
+      console.log("Server response", response);
+      const data = response.data;
+      if (data.accepted) {
+        setUserData({ ...userData, username });
+        setLoggedIn(data.accepted);
+      } else {
+        setLoginPageErrorText(data.response);
+      }
     })
     .catch((error) => console.log(`Error loggin in: ${error}`));
 };
-const loginDummy = async (username, password, setLoggedIn) => {
-  setLoggedIn(true);
-};
-const register = async (username, password, setLoggedIn) => {
+
+const register = async (
+  username,
+  password,
+  setLoggedIn,
+  setLoginPageErrorText,
+  userData,
+  setUserData
+) => {
   await axios
     .post(`${baseUrl}/register`, { username, password })
-    .then((response) => setLoggedIn(true))
+    .then((response) => {
+      console.log("Server response", response);
+      const data = response.data;
+      if (data.accepted) {
+        setUserData({ ...userData, username });
+        setLoggedIn(data.accepted);
+      } else {
+        setLoginPageErrorText(data.response);
+      }
+    })
     .catch((error) => console.log(`Error loggin in: ${error}`));
 };
 
 const UserAdministration = {
   login,
-  loginDummy,
   register,
 };
 

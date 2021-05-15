@@ -54,7 +54,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Header = () => {
+const Header = ({ userData }) => {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = useState(null);
@@ -153,6 +153,9 @@ const Header = () => {
           </Typography>
 
           <div className={classes.grow} />
+          <Typography className={classes.title} variant="h6" noWrap>
+            {userData.username}
+          </Typography>
           <div className={classes.sectionDesktop}>
             <IconButton
               edge="end"
