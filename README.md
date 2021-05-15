@@ -1,6 +1,6 @@
 # :keyboard: typify
  [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
- [![Backend Build Status](https://github.com/J1M-RYAN/typify/workflows/rust/badge.svg)]https://github.com/J1M-RYAN/typify/actions?query=workflow%3Arust
+ [![Backend Build Status](https://github.com/J1M-RYAN/typify/workflows/rust/badge.svg)](https://github.com/J1M-RYAN/typify/actions?query=workflow%3Arust)
 A web app to help me practice typing common English words [Live App](https://j1m-ryan.github.io/typify/)  
 
 
