@@ -19,4 +19,5 @@ jobs:
           architecture: 'x64' # optional, x64 or x86. If not specified, x64 will be used by default
       - run: yarn install
       - run: yarn build
-      - run: yarn test
+      # Comment this in once frontend has test to run ( if there are no test then it fails
+      #- run: yarn test
