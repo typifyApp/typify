@@ -32,4 +32,4 @@ jobs:
       - uses: actions-rs/cargo@v1
         with:
           command: test
-          args: +nightly --manifest-path rust-backend/Cargo.toml
+          args: --manifest-path rust-backend/Cargo.toml
