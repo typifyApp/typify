@@ -15,7 +15,7 @@ const useStyles = makeStyles({
     marginBottom: 12,
   },
   text: {
-    fontSize: 20,
+    fontSize: 25,
     fontFamily: "Ubuntu Mono",
   },
   textCorrect: {

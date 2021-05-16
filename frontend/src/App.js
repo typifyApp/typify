@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import UserAdministration from "./services/UserAdministration";
 import { Grid, ThemeProvider } from "@material-ui/core";
 import common100 from "./words/common100";
@@ -6,6 +6,7 @@ import Header from "./components/Header";
 import Statistics from "./components/Statistics";
 import Login from "./components/Login";
 import Display from "./components/Display";
+import Profile from "./components/Profile";
 import KeyboardEventHandler from "react-keyboard-event-handler";
 import { createMuiTheme } from "@material-ui/core/styles";
 import teal from "@material-ui/core/colors/teal";
@@ -46,11 +47,12 @@ const App = () => {
   const [textToType, setTextToType] = useState(shuffle(common100));
   const [errorSet, setErrorsSet] = useState(new Set());
   const [corrrectedSet, setCorrectedSet] = useState(new Set());
-
+  const [profileSelected, setProfileSelected] = useState(false);
   const [loginPageErrorText, setLoginPageErrorText] = useState("");
   const [userData, setUserData] = useState({});
   const [skippedLogin, setSkippedLogin] = useState(false);
-  const [completedRound, setCompletedRound] = useState(false);
+  const [previousScreen, setPreviousScreen] = useState("login");
+  const [currentScreen, setCurrentScreen] = useState("login"); // ["login", "mainTyping","stats", "profile"]
 
   const [statistics, setStatistics] = useState({
     errorsSoFar: 0,
@@ -58,6 +60,21 @@ const App = () => {
     startTime: null,
     corrected: 0,
   });
+
+  useEffect(() => {
+    let localStorageUsername = localStorage.getItem("username");
+    if (localStorageUsername) {
+      console.log("username is ", localStorageUsername);
+      setUsername(localStorageUsername);
+      setUserData({ ...userData, username: localStorageUsername });
+      setLoggedIn(true);
+      setCurrentScreen("mainTyping");
+    }
+  }, []);
+  const updateScreen = (current, updated) => {
+    setPreviousScreen(current);
+    setCurrentScreen(updated);
+  };
 
   const recordError = (errorIndex) => {
     errorSet.add(errorIndex);
@@ -73,6 +90,7 @@ const App = () => {
         ...statistics,
         errors: 0,
         errorsSoFar: 0,
+        startTime: new Date(),
       });
       setErrorsSet(new Set());
       setCorrectedSet(new Set());
@@ -116,7 +134,7 @@ const App = () => {
     });
     setTextToType(shuffle(common100));
     setErrorsSet(new Set());
-    setCompletedRound(true);
+    updateScreen(currentScreen, "stats");
     setCorrectedSet(new Set());
   };
 
@@ -127,7 +145,7 @@ const App = () => {
 
   return (
     <ThemeProvider theme={theme}>
-      {!loggedIn ? (
+      {currentScreen === "login" ? (
         <Grid
           container
           spacing={0}
@@ -150,13 +168,25 @@ const App = () => {
               userData={userData}
               setUserData={setUserData}
               setSkippedLogin={setSkippedLogin}
-              setCompletedRound={setCompletedRound}
+              currentScreen={currentScreen}
+              updateScreen={updateScreen}
+              setCurrentScreen={setCurrentScreen}
             />
           </Grid>
         </Grid>
       ) : (
         <>
-          <Header userData={userData} />
+          <Header
+            userData={userData}
+            loggedIn={loggedIn}
+            skippedLogin={skippedLogin}
+            profileSelected={profileSelected}
+            setProfileSelected={setProfileSelected}
+            currentScreen={currentScreen}
+            setCurrentScreen={setCurrentScreen}
+            updateScreen={updateScreen}
+            previousScreen={previousScreen}
+          />
           <Grid
             container
             spacing={0}
@@ -166,14 +196,18 @@ const App = () => {
             style={{ minHeight: "70vh" }}
           >
             <Grid item xs={12} md={6}>
-              {completedRound ? (
+              {currentScreen === "profile" ? (
+                <Profile userData={userData} />
+              ) : currentScreen === "stats" ? (
                 <Statistics
                   statistics={statistics}
                   skippedLogin={skippedLogin}
                   setSkippedLogin={setSkippedLogin}
                   setLoggedIn={setLoggedIn}
+                  updateScreen={updateScreen}
+                  currentScreen={currentScreen}
                 />
-              ) : (
+              ) : currentScreen === "mainTyping" ? (
                 <Display
                   typedText={typedText}
                   textToType={textToType}
@@ -183,8 +217,9 @@ const App = () => {
                   recordError={recordError}
                   errorSet={errorSet}
                   recordCorrected={recordCorrected}
-                  setCorrectedSet={setCorrectedSet}
                 />
+              ) : (
+                ""
               )}
             </Grid>
           </Grid>
@@ -199,10 +234,12 @@ const App = () => {
                   handleKeystroke(" ");
                   break;
                 case "enter":
-                  setCompletedRound(false);
+                  if (currentScreen === "stats") {
+                    updateScreen(currentScreen, "mainTyping");
+                  }
                   break;
                 default:
-                  if (completedRound) {
+                  if (currentScreen !== "mainTyping") {
                     break;
                   }
                   handleKeystroke(key);
