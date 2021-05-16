@@ -27,3 +27,5 @@ cp -r frontend/build $build_dir/$static_file_dir
 
 # TEMP: just copy the debug one:
 cp rust-backend/typify.sqlite $build_dir/typify.sqlite
+# TEMP: copy tls cert.
+cp -r rust-backend/openssl $build_dir

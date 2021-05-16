@@ -4,3 +4,7 @@ config.toml
 /logs
 /database
 Stats.toml
+
+#certs
+openssl/server.crt
+openssl/server.key
