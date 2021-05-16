@@ -1,5 +1,8 @@
 import axios from "axios";
-const baseUrl = "http://localhost:8000/api";
+const baseUrl =
+  process.env.REACT_APP_ENV === "development"
+    ? "http://localhost:8000/api"
+    : `${document.location}/api`;
 
 const login = async (
   username,
@@ -8,7 +11,10 @@ const login = async (
   setLoginPageErrorText,
   userData,
   setUserData,
-  setCompletedRound
+  setSkippedLogin,
+  setCurrentScreen,
+  currentScreen,
+  updateScreen
 ) => {
   await axios
     .post(`${baseUrl}/login`, { username, password })
@@ -18,7 +24,9 @@ const login = async (
       if (data.accepted) {
         setUserData({ ...userData, username });
         setLoggedIn(data.accepted);
-        setCompletedRound(false);
+        updateScreen(currentScreen, "mainTyping");
+        localStorage.setItem("username", username);
+        localStorage.setItem("loggedIn", true);
       } else {
         setLoginPageErrorText(data.response);
       }
@@ -33,7 +41,10 @@ const register = async (
   setLoginPageErrorText,
   userData,
   setUserData,
-  setCompletedRound
+  setSkippedLogin,
+  setCurrentScreen,
+  currentScreen,
+  updateScreen
 ) => {
   await axios
     .post(`${baseUrl}/register`, { username, password })
@@ -41,9 +52,11 @@ const register = async (
       console.log("Server response", response);
       const data = response.data;
       if (data.accepted) {
+        localStorage.setItem("username", username);
+        localStorage.setItem("loggedIn", true);
         setUserData({ ...userData, username });
         setLoggedIn(data.accepted);
-        setCompletedRound(false);
+        updateScreen(currentScreen, "mainTyping");
       } else {
         setLoginPageErrorText(data.response);
       }

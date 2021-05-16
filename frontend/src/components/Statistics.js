@@ -24,6 +24,8 @@ const Statistics = ({
   skippedLogin,
   setSkippedLogin,
   setLoggedIn,
+  updateScreen,
+  currentScreen,
 }) => {
   const classes = useStyles();
   return (
@@ -86,6 +88,7 @@ const Statistics = ({
               onClick={() => {
                 setSkippedLogin(false);
                 setLoggedIn(false);
+                updateScreen(currentScreen, "login");
               }}
             >
               Login to save you data

@@ -14,7 +14,7 @@ fi
 
 # Build frontend and backend
 echo ">> Building frontend..."
-(cd frontend; npm run build)
+(cd frontend; yarn install; yarn build)
 echo ">> Building backend..."
 (cd rust-backend; cargo build --release)
 
