@@ -16,6 +16,9 @@ const useStyles = makeStyles({
   button: {
     marginBottom: "10px",
   },
+  skipButton: {
+    backgroundColor: "lightgrey",
+  },
 });
 const Login = ({
   login,
@@ -30,7 +33,9 @@ const Login = ({
   userData,
   setUserData,
   setSkippedLogin,
-  setCompletedRound,
+  currentScreen,
+  setCurrentScreen,
+  updateScreen,
 }) => {
   const classes = useStyles();
   return (
@@ -96,7 +101,9 @@ const Login = ({
                 userData,
                 setUserData,
                 setSkippedLogin,
-                setCompletedRound
+                setCurrentScreen,
+                currentScreen,
+                updateScreen
               )
             }
           >
@@ -115,20 +122,21 @@ const Login = ({
                 userData,
                 setUserData,
                 setSkippedLogin,
-                setCompletedRound
+                setCurrentScreen,
+                currentScreen,
+                updateScreen
               )
             }
           >
             Register
           </Button>
           <Button
-            className={classes.button}
+            className={`${classes.button} ${classes.skipButton}`}
             variant="contained"
-            color="textSecondary"
             onClick={() => {
               setSkippedLogin(true);
               setLoggedIn(true);
-              setCompletedRound(false);
+              updateScreen(currentScreen, "mainTyping");
             }}
           >
             Skip
