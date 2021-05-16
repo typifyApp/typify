@@ -14,12 +14,13 @@ rocket_cors = { version = "0.5.1", features = ["serialization"] }
 rusqlite = "0.14.0"
 toml = "0.5.8"
 simple-logging = "2.0.2"
-ring = "0.16.20"
-rocket = "0.4.7"
+ring = "0.13.5"
+rocket = { version = "0.4.7", features= ["tls"] }
 privdrop = "0.5.0"
 data-encoding = "2.3.2"
+native-tls = "0.2.7"
 
 [dependencies.rocket_contrib]
 version = "0.4.7"
 default-features = false
-features = ["json","sqlite_pool","serve"]
+features = ["json","sqlite_pool","serve","helmet"]

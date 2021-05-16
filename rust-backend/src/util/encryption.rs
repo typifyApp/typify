@@ -6,8 +6,9 @@ use std::num::NonZeroU32;
 
 // Do not change unless you know what you ard doing.
 // Ideally dont ever change this.
-pub const ITER_COUNT : NonZeroU32 = NonZeroU32::new(5_000).unwrap();
+pub const ITER_COUNT : u32 = 5000;
 pub const CREDENTIAL_LEN: usize = digest::SHA512_OUTPUT_LEN;
+static DIGEST_ALG: &'static digest::Algorithm = &digest::SHA256;
 
 pub fn gen_random_salt() -> [u8; CREDENTIAL_LEN] {
     let rng = rand::SystemRandom::new();
@@ -19,7 +20,7 @@ pub fn gen_random_salt() -> [u8; CREDENTIAL_LEN] {
 pub fn gen_hash<'a>(input : &[u8],salt : &[u8]) -> [u8;CREDENTIAL_LEN] {
     let mut hash = [0u8; CREDENTIAL_LEN];
     pbkdf2::derive(
-        pbkdf2::PBKDF2_HMAC_SHA512,
+        DIGEST_ALG,
         ITER_COUNT,
         &salt,
         input,
@@ -30,7 +31,7 @@ pub fn gen_hash<'a>(input : &[u8],salt : &[u8]) -> [u8;CREDENTIAL_LEN] {
 
 pub fn check_hash(hash : &[u8],salt : &[u8], input : &[u8]) -> bool {
     let should_succeed = pbkdf2::verify(
-        pbkdf2::PBKDF2_HMAC_SHA512,
+        DIGEST_ALG,
         ITER_COUNT,
         &salt,
         input,

@@ -8,6 +8,7 @@ workers = 24
 keep_alive = 5
 read_timeout = 5
 write_timeout = 5
+tls = { key = "openssl/key.crt", certs = "openssl/server.crt" }
 #log = "normal"
 #limits = { forms = 32768 }
 
