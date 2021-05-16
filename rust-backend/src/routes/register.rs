@@ -4,6 +4,7 @@ use {
     super::models,
     super::SQLiteConnection,
     super::util::*,
+    log::*,
     data_encoding::*,
     rocket_contrib::json::Json,
     rocket::request::Form,
@@ -33,7 +34,7 @@ pub fn register_post(register_form : Json<models::register::RegistrationForm>, c
     let key_salt = encryption::gen_random_salt();
     let key_hash = encryption::gen_hash(restoration_key.as_bytes(),&key_salt);
     let salt = encryption::gen_random_salt();
-    let hash = encryption::gen_hash(register_form.username.as_bytes(),&salt);
+    let hash = encryption::gen_hash(register_form.password.as_bytes(),&salt);
     
     let mut stmt = conn.prepare(
         r#"
@@ -45,7 +46,12 @@ pub fn register_post(register_form : Json<models::register::RegistrationForm>, c
     let encoded_hash = HEXUPPER.encode(&hash);
     let encoded_key_salt = HEXUPPER.encode(&key_salt);
     let encoded_key_hash = HEXUPPER.encode(&key_hash);
-    stmt.execute(&[&register_form.username,&0,&encoded_hash,&encoded_salt,&encoded_key_hash,&encoded_key_salt]).unwrap();
+    info!("username : {}, password : {}", register_form.username, register_form.password);
+    info!("salt : {}, hash : {}",encoded_salt,encoded_hash);
+    let result = stmt.execute(&[&register_form.username,&0,&encoded_hash,&encoded_salt,&encoded_key_hash,&encoded_key_salt]);
+    if result.is_err() {
+        info!("{}", result.err().unwrap());
+    }
     let response = models::register::RegistrationResponse{
         accepted : true,
         account_restoration_key : String::from(restoration_key),
