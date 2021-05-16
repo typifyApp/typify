@@ -38,6 +38,7 @@ const shuffle = (words) => {
   allWords.sort((a, b) => 0.5 - Math.random());
   return allWords.slice(0, 20).join(" ");
 };
+
 const App = () => {
   const [loggedIn, setLoggedIn] = useState(false);
   const [username, setUsername] = useState("");
@@ -62,14 +63,16 @@ const App = () => {
   });
 
   useEffect(() => {
-    let localStorageUsername = localStorage.getItem("username");
-    if (localStorageUsername) {
-      console.log("username is ", localStorageUsername);
-      setUsername(localStorageUsername);
-      setUserData({ ...userData, username: localStorageUsername });
-      setLoggedIn(true);
-      setCurrentScreen("mainTyping");
-    }
+    const doOnce = () => {
+      let localStorageUsername = localStorage.getItem("username");
+      if (localStorageUsername) {
+        setUsername(localStorageUsername);
+        setUserData({ username: localStorageUsername });
+        setLoggedIn(true);
+        setCurrentScreen("mainTyping");
+      }
+    };
+    doOnce();
   }, []);
   const updateScreen = (current, updated) => {
     setPreviousScreen(current);
