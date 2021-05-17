@@ -29,31 +29,49 @@ pub fn register_option(cors : rocket_cors::Guard<'_>) -> Responder<'_,status::Ac
 
 #[post("/api/register", data = "<register_form>")]
 pub fn register_post(register_form : Json<models::register::RegistrationForm>, conn : SQLiteConnection, cors : rocket_cors::Guard<'_>) ->  Responder<Json<models::register::RegistrationResponse>> {
+
+    let mut search = conn.prepare(
+        r#"
+        SELECT username
+        FROM accounts
+        WHERE username=?1
+        "#
+    ).unwrap();
+    let result = search.query_row(&[&register_form.username], |_row| {});
+    if result.is_ok() {
+        let response = models::register::RegistrationResponse {
+            accepted : false,
+            response : String::from(format!("Username {} already exists.", register_form.username)),
+            account_restoration_key : String::new(),
+            cookie : String::new(),
+        };
+        return cors.responder(Json(response)) 
+    }
+
     //Create the 64 byte restoration key from random nums.
     let restoration_key = "test";
     let key_salt = encryption::gen_random_salt();
     let key_hash = encryption::gen_hash(restoration_key.as_bytes(),&key_salt);
     let salt = encryption::gen_random_salt();
     let hash = encryption::gen_hash(register_form.password.as_bytes(),&salt);
-    
-    let mut stmt = conn.prepare(
-        r#"
-        INSERT INTO accounts (username, user_id, password, salt,restoration_key,restoration_key_salt)
-        VALUES (?1,?2,?3,?4,?5,?6);
-        "#
-    ).unwrap();
     let encoded_salt = HEXUPPER.encode(&salt);
     let encoded_hash = HEXUPPER.encode(&hash);
     let encoded_key_salt = HEXUPPER.encode(&key_salt);
     let encoded_key_hash = HEXUPPER.encode(&key_hash);
-    info!("username : {}, password : {}", register_form.username, register_form.password);
-    info!("salt : {}, hash : {}",encoded_salt,encoded_hash);
-    let result = stmt.execute(&[&register_form.username,&0,&encoded_hash,&encoded_salt,&encoded_key_hash,&encoded_key_salt]);
+    
+    let mut insert = conn.prepare(
+        r#"
+        INSERT INTO accounts (username, password, salt, restoration_key, restoration_key_salt)
+        VALUES (?1,?2,?3,?4,?5);
+        "#
+    ).unwrap();
+    let result = insert.execute(&[&register_form.username,&encoded_hash,&encoded_salt,&encoded_key_hash,&encoded_key_salt]);
     if result.is_err() {
         info!("{}", result.err().unwrap());
     }
     let response = models::register::RegistrationResponse{
         accepted : true,
+        response : String::from("Successfully registered!"),
         account_restoration_key : String::from(restoration_key),
         cookie : String::from(""),
     };
