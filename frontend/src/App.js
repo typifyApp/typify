@@ -179,7 +179,7 @@ const App = () => {
           justify="center"
           style={{ minHeight: "100vh" }}
         >
-          <Grid item xs={12} lg={3}>
+          <Grid item xs={12}>
             <Login
               username={username}
               setUsername={setUsername}
