@@ -8,7 +8,7 @@ workers = 24
 keep_alive = 5
 read_timeout = 5
 write_timeout = 5
-tls = { key = "openssl/server.key", certs = "openssl/server.crt" }
+secret_key = "E19fSEJwDP/PlL+mD6Zz87p/IU7+DY20ipEJFrOsysM="
 #log = "normal"
 #limits = { forms = 32768 }
 
@@ -30,5 +30,6 @@ keep_alive = 5
 read_timeout = 5
 write_timeout = 5
 log = "normal"
+secret_key = "E19fSEJwDP/PlL+mD6Zz87p/IU7+DY20ipEJFrOsysM="
 tls = { key = "openssl/server.key", certs = "openssl/server.crt" }
 #limits = { forms = 32768 }

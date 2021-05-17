@@ -11,6 +11,7 @@ pub struct RegistrationForm {
 #[derive(Serialize, Deserialize)]
 pub struct RegistrationResponse {
     pub accepted : bool,
+    pub response : String,
     pub account_restoration_key : String,
     pub cookie : String,
 }

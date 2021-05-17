@@ -11,6 +11,7 @@ chrono = { version = "0.4", features = ["serde"] }
 serde = { version = "1.0", features = ["derive"] }
 url = { version = "2", features = ["serde"] }
 rocket_cors = { version = "0.5.1", features = ["serialization"] }
+uuid = { version = "0.8", features = ["serde", "v4"] }
 rusqlite = "0.14.0"
 toml = "0.5.8"
 simple-logging = "2.0.2"
@@ -23,4 +24,4 @@ native-tls = "0.2.7"
 [dependencies.rocket_contrib]
 version = "0.4.7"
 default-features = false
-features = ["json","sqlite_pool","serve","helmet"]
+features = ["json","sqlite_pool","serve","helmet","uuid"]
