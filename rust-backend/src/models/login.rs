@@ -12,5 +12,5 @@ pub struct LoginForm {
 pub struct LoginResponse {
     pub accepted : bool,
     pub response : String,
-    pub cookie : String,
+    pub token : String,
 }

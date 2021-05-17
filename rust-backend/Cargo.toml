@@ -20,6 +20,7 @@ rocket = { version = "0.4.7", features= ["tls"] }
 privdrop = "0.5.0"
 data-encoding = "2.3.2"
 native-tls = "0.2.7"
+jsonwebtoken = "5.0.1"
 
 [dependencies.rocket_contrib]
 version = "0.4.7"

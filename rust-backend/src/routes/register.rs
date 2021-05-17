@@ -4,6 +4,7 @@ use {
     super::models,
     super::SQLiteConnection,
     super::util::*,
+    super::models::*,
     log::*,
     data_encoding::*,
     rocket_contrib::json::Json,
@@ -28,7 +29,7 @@ pub fn register_option(cors : rocket_cors::Guard<'_>) -> Responder<'_,status::Ac
 }
 
 #[post("/api/register", data = "<register_form>")]
-pub fn register_post(register_form : Json<models::register::RegistrationForm>, conn : SQLiteConnection, cors : rocket_cors::Guard<'_>) ->  Responder<Json<models::register::RegistrationResponse>> {
+pub fn register_post<'a>(register_form : Json<models::register::RegistrationForm>, conn : SQLiteConnection, cors : rocket_cors::Guard<'a>, key : State<state::SecretKey>) ->  Responder<'a, Json<models::register::RegistrationResponse>> {
 
     let mut search = conn.prepare(
         r#"
@@ -43,7 +44,6 @@ pub fn register_post(register_form : Json<models::register::RegistrationForm>, c
             accepted : false,
             response : String::from(format!("Username {} already exists.", register_form.username)),
             account_restoration_key : String::new(),
-            cookie : String::new(),
         };
         return cors.responder(Json(response)) 
     }
@@ -69,11 +69,11 @@ pub fn register_post(register_form : Json<models::register::RegistrationForm>, c
     if result.is_err() {
         info!("{}", result.err().unwrap());
     }
+
     let response = models::register::RegistrationResponse{
         accepted : true,
         response : String::from("Successfully registered!"),
         account_restoration_key : String::from(restoration_key),
-        cookie : String::from(""),
     };
     cors.responder(Json(response)) 
 }

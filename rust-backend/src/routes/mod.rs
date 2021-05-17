@@ -21,5 +21,5 @@ use {
 
 pub mod login;
 pub mod register;
-pub mod score;
+pub mod info;
 use super::*;

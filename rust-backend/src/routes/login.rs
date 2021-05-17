@@ -1,14 +1,15 @@
 use {
     log::*,
-    super::models,
+    super::models::*,
     super::SQLiteConnection,
     super::util::*,
     rocket_contrib::json::Json,
     rocket_cors::Responder,
     rocket_contrib::json::JsonValue,
     rocket::response::{Response},
-    rocket::http::{Header,Status},
     rocket::response::status,
+    rocket::State,
+    jsonwebtoken::{encode, decode, Header, Algorithm, Validation},
 };
 
 use data_encoding::HEXUPPER;
@@ -19,7 +20,7 @@ pub fn login_option(cors : rocket_cors::Guard<'_>) -> Responder<'_,status::Accep
 }
 
 #[post("/api/login", data = "<login_form>")]
-pub fn login_post<'a>(login_form : Json<models::login::LoginForm>, conn : SQLiteConnection, cors : rocket_cors::Guard<'_>) -> Responder<Json<models::login::LoginResponse>> {
+pub fn login_post<'a>(login_form : Json<login::LoginForm>, conn : SQLiteConnection, cors : rocket_cors::Guard<'a>, key : State<state::SecretKey>) -> Responder<'a, Json<login::LoginResponse>> {
     let mut stmt = conn.prepare(
         r#"
         SELECT DISTINCT username, password, salt
@@ -35,7 +36,7 @@ pub fn login_post<'a>(login_form : Json<models::login::LoginForm>, conn : SQLite
         let salt = HEXUPPER.decode(salt_string.as_bytes()).unwrap();
 
         if encryption::check_hash(&hash, &salt, login_form.password.as_bytes()) {
-            Ok(models::login::LoginForm {
+            Ok(login::LoginForm {
                 username : row.get(0),
                 password : queried_password,
             })
@@ -50,17 +51,24 @@ pub fn login_post<'a>(login_form : Json<models::login::LoginForm>, conn : SQLite
 
     let response = match result {
         Ok(_accepted_login) => {
-            let response = models::login::LoginResponse{
+            let claims = super::models::Claims {
+                sub : String::from(login_form.username.clone()),
+                company : String::from("typify"),
+                exp : 3000,
+            };
+            let token = encode(&Header::default(), &claims, key.inner().0.as_bytes()).unwrap();
+
+            let response = login::LoginResponse{
                 response : String::from("Login accepted"),
-                cookie : String::from(""),
+                token : token,
                 accepted : true,
             };
             Json(response)
         },
         Err(e) => {
-            let response = models::login::LoginResponse{
+            let response = login::LoginResponse{
                 response : String::from(format!("{}", e)),
-                cookie : String::from(""),
+                token : String::from(""),
                 accepted : false,
             };
             Json(response)

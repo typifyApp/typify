@@ -18,3 +18,6 @@ impl Default for ServerStats{
         }
     }
 }
+
+#[derive(Serialize, Deserialize)]
+pub struct SecretKey(pub String);
