@@ -8,6 +8,7 @@ import Login from "./components/Login";
 import Display from "./components/Display";
 import Profile from "./components/Profile";
 import KeyboardEventHandler from "react-keyboard-event-handler";
+import WordsUtils from "./utils/WordsUtils";
 import { createMuiTheme } from "@material-ui/core/styles";
 import teal from "@material-ui/core/colors/teal";
 import lightBlue from "@material-ui/core/colors/lightBlue";
@@ -32,12 +33,6 @@ const theme = createMuiTheme({
     fontWeightMedium: 500,
   },
 });
-const shuffle = (words) => {
-  // get first 20 of shuffled
-  const allWords = words.map((wordObject) => wordObject.word);
-  allWords.sort((a, b) => 0.5 - Math.random());
-  return allWords.slice(0, 20).join(" ");
-};
 
 const App = () => {
   const [loggedIn, setLoggedIn] = useState(false);
@@ -45,7 +40,7 @@ const App = () => {
   const [password, setPassword] = useState("");
   const [lastSpace, setLastSpace] = useState(0);
   const [typedText, setTypedText] = useState("");
-  const [textToType, setTextToType] = useState(shuffle(common100));
+  const [textToType, setTextToType] = useState(WordsUtils.shuffle(common100));
   const [errorSet, setErrorsSet] = useState(new Set());
   const [corrrectedSet, setCorrectedSet] = useState(new Set());
   const [profileSelected, setProfileSelected] = useState(false);
@@ -74,6 +69,7 @@ const App = () => {
     };
     doOnce();
   }, []);
+
   const updateScreen = (current, updated) => {
     setPreviousScreen(current);
     setCurrentScreen(updated);
@@ -87,7 +83,6 @@ const App = () => {
   };
 
   const resetMainTyping = (resetTypedText) => {
-    console.log("resetting maintyping");
     setStatistics({
       ...statistics,
       errors: 0,
@@ -102,10 +97,18 @@ const App = () => {
   };
 
   const handleBackspace = () => {
-    setTypedText(typedText.substring(0, typedText.length - 1));
     if (typedText.length <= 1) {
       resetMainTyping(false);
+      return;
     }
+    let currentCharIndex = typedText.length - 1;
+    if (errorSet.has(currentCharIndex + 1)) {
+      setStatistics({
+        ...statistics,
+        errorsSoFar: Math.max(statistics.errorsSoFar - 1, 0),
+      });
+    }
+    setTypedText(typedText.substring(0, typedText.length - 1));
   };
 
   const handleKeystroke = (keyStroke) => {
@@ -129,10 +132,17 @@ const App = () => {
   const resetWords = () => {
     const endTime = new Date();
     let timeDifferenceInSeconds = (endTime - statistics.startTime) / 1000;
-    let correctChars = textToType.length - statistics.errorsSoFar - 1;
+    let correctChars =
+      textToType.length - statistics.errorsSoFar + corrrectedSet.size;
+    console.log("textToType.length", textToType.length);
+    console.log("errorsSoFar", statistics.errorsSoFar);
+    console.log("corrrectedSet", corrrectedSet);
+    console.log("corrrectedSet.size", corrrectedSet.size);
+    console.log("correctChars", correctChars);
+
     let charsPerSecond = correctChars / timeDifferenceInSeconds;
     let charsPerMinute = charsPerSecond * 60;
-    let wordsPerMinute = Math.round(charsPerMinute / 4.7);
+    let wordsPerMinute = Math.round(charsPerMinute / 5);
     setStatistics({
       ...statistics,
       errors: statistics.errorsSoFar,
@@ -143,7 +153,7 @@ const App = () => {
       correctChars,
       corrected: corrrectedSet.size,
     });
-    setTextToType(shuffle(common100));
+    setTextToType(WordsUtils.shuffle(common100));
     setErrorsSet(new Set());
     updateScreen(currentScreen, "stats");
     setCorrectedSet(new Set());
