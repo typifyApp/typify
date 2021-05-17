@@ -86,17 +86,25 @@ const App = () => {
     corrrectedSet.add(correctedIndex);
   };
 
+  const resetMainTyping = (resetTypedText) => {
+    console.log("resetting maintyping");
+    setStatistics({
+      ...statistics,
+      errors: 0,
+      errorsSoFar: 0,
+      startTime: new Date(),
+    });
+    setErrorsSet(new Set());
+    setCorrectedSet(new Set());
+    if (resetTypedText) {
+      setTypedText("");
+    }
+  };
+
   const handleBackspace = () => {
     setTypedText(typedText.substring(0, typedText.length - 1));
     if (typedText.length <= 1) {
-      setStatistics({
-        ...statistics,
-        errors: 0,
-        errorsSoFar: 0,
-        startTime: new Date(),
-      });
-      setErrorsSet(new Set());
-      setCorrectedSet(new Set());
+      resetMainTyping(false);
     }
   };
 
@@ -189,6 +197,7 @@ const App = () => {
             setCurrentScreen={setCurrentScreen}
             updateScreen={updateScreen}
             previousScreen={previousScreen}
+            resetMainTyping={resetMainTyping}
           />
           <Grid
             container

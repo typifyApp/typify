@@ -58,6 +58,7 @@ const Header = ({
   setCurrentScreen,
   updateScreen,
   previousScreen,
+  resetMainTyping,
 }) => {
   const classes = useStyles();
 
@@ -98,6 +99,9 @@ const Header = ({
                   document.activeElement.blur();
                   switch (currentScreen) {
                     case "profile":
+                      if (previousScreen === "mainTyping") {
+                        resetMainTyping(true);
+                      }
                       updateScreen(currentScreen, previousScreen);
                       break;
                     case "stats":
