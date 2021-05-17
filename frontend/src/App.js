@@ -9,6 +9,7 @@ import Display from "./components/Display";
 import Profile from "./components/Profile";
 import KeyboardEventHandler from "react-keyboard-event-handler";
 import WordsUtils from "./utils/WordsUtils";
+import SetUtils from "./utils/SetUtils";
 import { createMuiTheme } from "@material-ui/core/styles";
 import teal from "@material-ui/core/colors/teal";
 import lightBlue from "@material-ui/core/colors/lightBlue";
@@ -99,7 +100,6 @@ const App = () => {
   const handleBackspace = () => {
     if (typedText.length <= 1) {
       resetMainTyping(false);
-      return;
     }
     let currentCharIndex = typedText.length - 1;
     if (errorSet.has(currentCharIndex + 1)) {
@@ -130,10 +130,14 @@ const App = () => {
     setTypedText(typedText + keyStroke);
   };
   const resetWords = () => {
+    SetUtils.removeAll(corrrectedSet, errorSet);
     const endTime = new Date();
     let timeDifferenceInSeconds = (endTime - statistics.startTime) / 1000;
-    let correctChars =
-      textToType.length - statistics.errorsSoFar + corrrectedSet.size;
+    let correctChars = Math.min(
+      textToType.length,
+      textToType.length - statistics.errorsSoFar + corrrectedSet.size
+    );
+
     console.log("textToType.length", textToType.length);
     console.log("errorsSoFar", statistics.errorsSoFar);
     console.log("corrrectedSet", corrrectedSet);
