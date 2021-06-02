@@ -29,7 +29,7 @@ pub fn register_option(cors : rocket_cors::Guard<'_>) -> Responder<'_,status::Ac
 }
 
 #[post("/api/register", data = "<register_form>")]
-pub fn register_post<'a>(register_form : Json<models::register::RegistrationForm>, conn : SQLiteConnection, cors : rocket_cors::Guard<'a>, key : State<state::SecretKey>) ->  Responder<'a, Json<models::register::RegistrationResponse>> {
+pub fn register_post<'a>(register_form : Json<models::register::RegistrationForm>, conn : SQLiteConnection, cors : rocket_cors::Guard<'a>, _key : State<state::SecretKey>) ->  Responder<'a, Json<models::register::RegistrationResponse>> {
 
     let mut search = conn.prepare(
         r#"
