@@ -1,1 +1,0 @@
-curl --location --request GET 'localhost:8000'

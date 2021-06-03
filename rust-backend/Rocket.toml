@@ -15,7 +15,7 @@ key = "E19fSEJwDP/PlL+mD6Zz87p/IU7+DY20ipEJFrOsysM="
 
 [staging]
 address = "localhost"
-port = 80
+port = 8000
 workers = 24
 keep_alive = 5
 read_timeout = 5
