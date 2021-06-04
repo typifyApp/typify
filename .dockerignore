@@ -3,6 +3,7 @@
 !frontend/public
 !frontend/package.json
 !rust-backend/openssl
+!rust-backend/typify.sqlite
 !rust-backend/src
 !rust-backend/Cargo.toml
 !rust-backend/Rocket.toml
