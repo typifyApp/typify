@@ -42,7 +42,8 @@ RUN rustup default nightly
 COPY ./rust-backend .
 # cd into rust-backend folder
 WORKDIR /rust-backend
-RUN cargo +nightly build --release
+RUN cargo +nightly build
 
 # run backend
-RUN cargo run --release 
+CMD cargo run
+EXPOSE 8000/tcp

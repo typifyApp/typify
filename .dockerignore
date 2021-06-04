@@ -1,5 +1,7 @@
 *
-!frontend
+!frontend/src
+!frontend/public
+!frontend/package.json
 !rust-backend/openssl
 !rust-backend/src
 !rust-backend/Cargo.toml
