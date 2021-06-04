@@ -3,7 +3,7 @@
  [![Backend Build Status](https://github.com/J1M-RYAN/typify/workflows/rust-backend/badge.svg)](https://github.com/J1M-RYAN/typify/actions?query=workflow%3Arust)
  [![Frontend Build Status](https://github.com/J1M-RYAN/typify/workflows/frontend/badge.svg)](https://github.com/J1M-RYAN/typify/actions?query=workflow%3Afrontend)
 
-A web app to help me practice typing common English words [Live App](https://j1m-ryan.github.io/typify/)  
+A web app to help me practice typing common English words
 
 ![](images/program.gif)  
 ### :computer: Frontend installation
