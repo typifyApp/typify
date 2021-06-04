@@ -2,7 +2,7 @@
 typify = { url = "typify.sqlite" }
 
 [development]
-address = "172.17.0.2"
+address = "localhost"
 port = 8000
 workers = 24
 keep_alive = 5
