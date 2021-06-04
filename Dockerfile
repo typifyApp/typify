@@ -25,6 +25,7 @@ RUN yarn build
 # Ensure we are in the root dir
 WORKDIR /
 # Install backend dependencies
+RUN apt-get install --yes build-essential
 RUN apt-get install --yes libsqlite3-dev
 RUN apt-get install --yes libssl-dev 
 RUN apt-get install --yes pkg-config 
@@ -35,12 +36,13 @@ ENV CARGO_HOME=/cargo
 ENV PATH=/cargo/bin:/rust/bin:$PATH
 RUN echo "(curl https://sh.rustup.rs -sSf | sh -s -- -y --default-toolchain nightly --no-modify-path) && rustup default nightly" > /install-rust.sh && chmod 755 /install-rust.sh
 RUN ./install-rust.sh
+RUN rustup default nightly
 
 # ====== BUILD BACKEND ======
 COPY ./rust-backend .
 # cd into rust-backend folder
 WORKDIR /rust-backend
-RUN cargo build --release
+RUN cargo +nightly build --release
 
 # run backend
 RUN cargo run --release 

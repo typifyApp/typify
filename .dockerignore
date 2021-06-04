@@ -1,0 +1,6 @@
+*
+!frontend
+!rust-backend/openssl
+!rust-backend/src
+!rust-backend/Cargo.toml
+!rust-backend/Rocket.toml
