@@ -1,5 +1,6 @@
 FROM ubuntu
 
+# Update ubunut
 RUN apt-get update && apt-get upgrade -y
 
 # ====== PREPARE TO BUILD FRONTEND ====== 
