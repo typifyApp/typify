@@ -38,10 +38,6 @@ fn main() -> Result<(), Box<dyn std::error::Error>>{
         simple_logging::log_to_stderr(LevelFilter::Warn);
         StaticFiles::from("public")
     };
-
-    if let Ok(value) = std::env::var("ROCKET_ADDRESS") {
-        println!("http://{}", value);
-    }
     
     let cors = rocket_cors::CorsOptions::default()
         .allowed_origins(AllowedOrigins::All)

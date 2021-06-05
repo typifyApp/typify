@@ -14,12 +14,12 @@ secret_key = "E19fSEJwDP/PlL+mD6Zz87p/IU7+DY20ipEJFrOsysM="
 
 [production]
 address = "localhost"
-port = 80
+port = 443
 workers = 24
 keep_alive = 5
 read_timeout = 5
 write_timeout = 5
 log = "normal"
 secret_key = "E19fSEJwDP/PlL+mD6Zz87p/IU7+DY20ipEJFrOsysM="
-#tls = { key = "openssl/server.key", certs = "openssl/server.crt" }
+tls = { key = "server.key", certs = "server.crt" }
 #limits = { forms = 32768 }

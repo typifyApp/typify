@@ -1,3 +1,3 @@
 #!/bin/bash
 sudo docker build -t typify .
-sudo docker run -it -p 8000:8000 typify
+sudo docker run -it -p 127.0.0.1:443:443 typify
