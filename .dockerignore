@@ -2,6 +2,7 @@
 !frontend/src
 !frontend/public
 !frontend/package.json
+!frontend/yarn.lock
 !rust-backend/openssl
 !rust-backend/typify.sqlite
 !rust-backend/src

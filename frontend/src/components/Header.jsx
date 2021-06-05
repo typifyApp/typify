@@ -1,12 +1,14 @@
-import { makeStyles } from "@material-ui/core/styles";
-import AppBar from "@material-ui/core/AppBar";
-import Toolbar from "@material-ui/core/Toolbar";
-import IconButton from "@material-ui/core/IconButton";
-import Typography from "@material-ui/core/Typography";
-import MenuIcon from "@material-ui/icons/Menu";
-import AccountCircle from "@material-ui/icons/AccountCircle";
-import KeyboardIcon from "@material-ui/icons/Keyboard";
-import PieChartIcon from "@material-ui/icons/PieChart";
+import { makeStyles } from '@material-ui/core/styles';
+import AppBar from '@material-ui/core/AppBar';
+import Toolbar from '@material-ui/core/Toolbar';
+import IconButton from '@material-ui/core/IconButton';
+import Typography from '@material-ui/core/Typography';
+import MenuIcon from '@material-ui/icons/Menu';
+import AccountCircle from '@material-ui/icons/AccountCircle';
+import KeyboardIcon from '@material-ui/icons/Keyboard';
+import PieChartIcon from '@material-ui/icons/PieChart';
+import PropTypes from 'prop-types';
+
 const useStyles = makeStyles((theme) => ({
   grow: {
     flexGrow: 1,
@@ -15,35 +17,35 @@ const useStyles = makeStyles((theme) => ({
     marginRight: theme.spacing(2),
   },
   title: {
-    display: "none",
-    [theme.breakpoints.up("sm")]: {
-      display: "block",
+    display: 'none',
+    [theme.breakpoints.up('sm')]: {
+      display: 'block',
     },
   },
 
   inputRoot: {
-    color: "inherit",
+    color: 'inherit',
   },
   inputInput: {
     padding: theme.spacing(1, 1, 1, 0),
     // vertical padding + font size from searchIcon
     paddingLeft: `calc(1em + ${theme.spacing(4)}px)`,
-    transition: theme.transitions.create("width"),
-    width: "100%",
-    [theme.breakpoints.up("md")]: {
-      width: "20ch",
+    transition: theme.transitions.create('width'),
+    width: '100%',
+    [theme.breakpoints.up('md')]: {
+      width: '20ch',
     },
   },
   sectionDesktop: {
-    display: "none",
-    [theme.breakpoints.up("md")]: {
-      display: "flex",
+    display: 'none',
+    [theme.breakpoints.up('md')]: {
+      display: 'flex',
     },
   },
   sectionMobile: {
-    display: "flex",
-    [theme.breakpoints.up("md")]: {
-      display: "none",
+    display: 'flex',
+    [theme.breakpoints.up('md')]: {
+      display: 'none',
     },
   },
 }));
@@ -52,10 +54,7 @@ const Header = ({
   userData,
   loggedIn,
   skippedLogin,
-  profileSelected,
-  setProfileSelected,
   currentScreen,
-  setCurrentScreen,
   updateScreen,
   previousScreen,
   resetMainTyping,
@@ -80,13 +79,13 @@ const Header = ({
 
           <div className={classes.grow} />
           <Typography className={classes.title} variant="h6" noWrap>
-            {currentScreen !== "profile"
+            {currentScreen !== 'profile'
               ? userData.username
-              : previousScreen === "mainTyping"
-              ? "Back to typing"
-              : previousScreen === "stats"
-              ? "Back to stats"
-              : ""}
+              : previousScreen === 'mainTyping'
+                ? 'Back to typing'
+                : previousScreen === 'stats'
+                  ? 'Back to stats'
+                  : ''}
           </Typography>
           <div className={classes.sectionDesktop}>
             {loggedIn && !skippedLogin ? (
@@ -98,35 +97,35 @@ const Header = ({
                 onClick={() => {
                   document.activeElement.blur();
                   switch (currentScreen) {
-                    case "profile":
-                      if (previousScreen === "mainTyping") {
+                    case 'profile':
+                      if (previousScreen === 'mainTyping') {
                         resetMainTyping(true);
                       }
                       updateScreen(currentScreen, previousScreen);
                       break;
-                    case "stats":
-                      updateScreen(currentScreen, "profile");
+                    case 'stats':
+                      updateScreen(currentScreen, 'profile');
                       break;
-                    case "mainTyping":
-                      updateScreen(currentScreen, "profile");
+                    case 'mainTyping':
+                      updateScreen(currentScreen, 'profile');
                       break;
                     default:
-                      console.log("header unknown screen", currentScreen);
+                      console.log('header unknown screen', currentScreen);
                   }
                 }}
               >
-                {currentScreen !== "profile" ? (
+                {currentScreen !== 'profile' ? (
                   <AccountCircle />
-                ) : previousScreen === "mainTyping" ? (
+                ) : previousScreen === 'mainTyping' ? (
                   <KeyboardIcon />
-                ) : previousScreen === "stats" ? (
+                ) : previousScreen === 'stats' ? (
                   <PieChartIcon />
                 ) : (
-                  ""
+                  ''
                 )}
               </IconButton>
             ) : (
-              ""
+              ''
             )}
           </div>
         </Toolbar>
@@ -134,4 +133,16 @@ const Header = ({
     </div>
   );
 };
+Header.propTypes = {
+  userData: PropTypes.shape({
+    username: PropTypes.string.isRequired,
+  }).isRequired,
+  loggedIn: PropTypes.bool.isRequired,
+  skippedLogin: PropTypes.bool.isRequired,
+  currentScreen: PropTypes.string.isRequired,
+  updateScreen: PropTypes.func.isRequired,
+  previousScreen: PropTypes.string.isRequired,
+  resetMainTyping: PropTypes.func.isRequired,
+};
+
 export default Header;

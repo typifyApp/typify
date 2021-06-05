@@ -1,9 +1,14 @@
-import { Card, CardContent, Typography, Box } from "@material-ui/core";
-import { makeStyles } from "@material-ui/core/styles";
-import teal from "@material-ui/core/colors/teal";
-import red from "@material-ui/core/colors/red";
-import grey from "@material-ui/core/colors/grey";
-import orange from "@material-ui/core/colors/orange";
+/* eslint-disable no-return-assign */
+import {
+  Card, CardContent, Typography, Box,
+} from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
+import teal from '@material-ui/core/colors/teal';
+import red from '@material-ui/core/colors/red';
+import grey from '@material-ui/core/colors/grey';
+import orange from '@material-ui/core/colors/orange';
+import PropTypes from 'prop-types';
+
 const useStyles = makeStyles({
   root: {
     minWidth: 275,
@@ -16,7 +21,7 @@ const useStyles = makeStyles({
   },
   text: {
     fontSize: 25,
-    fontFamily: "Ubuntu Mono",
+    fontFamily: 'Ubuntu Mono',
   },
   textCorrect: {
     color: teal[500],
@@ -37,7 +42,6 @@ const Display = ({
   recordError,
   errorSet,
   recordCorrected,
-  setCorrectedSet,
 }) => {
   const classes = useStyles();
   let lastSpace = 0;
@@ -59,27 +63,28 @@ const Display = ({
           </Typography>
 
           <Typography display="inline">
-            {textToType.split("").map((char, i) => (
+            {textToType.split('').map((char, i) => (
               <Typography
-                component={"span"}
+                component="span"
+                // eslint-disable-next-line react/no-array-index-key
                 key={i}
                 className={`${classes.text} ${
-                  i === typedText.length ? "cursorBlink" : ""
+                  i === typedText.length ? 'cursorBlink' : ''
                 } ${
                   typedText.length <= i
                     ? classes.textNotYet
                     : typedText[i] === char
-                    ? errorSet.has(i)
-                      ? (recordCorrected(i), classes.textCorrected)
-                      : classes.textCorrect
-                    : (recordError(i), classes.textWrong)
+                      ? errorSet.has(i)
+                        ? (recordCorrected(i), classes.textCorrected)
+                        : classes.textCorrect
+                      : (recordError(i), classes.textWrong)
                 }`}
                 display="inline"
               >
-                {char === " " ? "␣" : char}
-                {char === " " && i !== 0 && lastSpace > 40
+                {char === ' ' ? '␣' : char}
+                {char === ' ' && i !== 0 && lastSpace > 40
                   ? ((lastSpace = 0), (<br />))
-                  : (lastSpace++, "")}
+                  : (lastSpace++, '')}
               </Typography>
             ))}
           </Typography>
@@ -89,4 +94,11 @@ const Display = ({
   );
 };
 
+Display.propTypes = {
+  typedText: PropTypes.string.isRequired,
+  textToType: PropTypes.string.isRequired,
+  recordError: PropTypes.func.isRequired,
+  errorSet: PropTypes.instanceOf(Set).isRequired,
+  recordCorrected: PropTypes.func.isRequired,
+};
 export default Display;
