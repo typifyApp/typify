@@ -1,8 +1,5 @@
 import axios from "axios";
-const baseUrl =
-  process.env.NODE_ENV === "production"
-    ? `${document.location}api`
-    : "http://localhost:8000/api";
+const baseUrl = "api"
 
 const login = async (
   username,
