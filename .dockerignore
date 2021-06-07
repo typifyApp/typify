@@ -3,7 +3,8 @@
 !frontend/public
 !frontend/package.json
 !frontend/yarn.lock
-!rust-backend/openssl
+!rust-backend/gen_cert.sh
+!rust-backend/development_config
 !rust-backend/typify.sqlite
 !rust-backend/src
 !rust-backend/Cargo.toml

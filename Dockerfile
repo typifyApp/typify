@@ -45,7 +45,7 @@ COPY ./rust-backend /typify/rust-backend
 # cd into rust-backend folder
 WORKDIR /typify/rust-backend
 RUN cargo +nightly build --release
-RUN (cd openssl; ./gen_cert.sh)
+RUN ./gen_cert.sh
 
 # ====== PUT BUILT FILES IN NEW IMAGE ======
 FROM ubuntu
@@ -60,7 +60,7 @@ WORKDIR /typify
 COPY --from=builder /typify/rust-backend/target/release/rust-backend .
 COPY --from=builder /typify/rust-backend/typify.sqlite .
 COPY --from=builder /typify/rust-backend/Rocket.toml .
-COPY --from=builder /typify/rust-backend/openssl/server.* ./
+COPY --from=builder /typify/rust-backend/server.* ./
 COPY --from=builder /typify/frontend/build ./public/
 RUN chmod +x rust-backend
 # run backend
