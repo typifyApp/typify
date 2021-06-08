@@ -1,0 +1,2 @@
+[env]
+ROCKET_CLI_COLORS = "off"
