@@ -105,3 +105,6 @@ dist
 
 # Final build directory
 /final_build
+
+# (Specifically for Dawid) file that holds the current commit message
+commit.md

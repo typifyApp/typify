@@ -3,7 +3,7 @@
  [![Backend Build Status](https://github.com/J1M-RYAN/typify/workflows/rust-backend/badge.svg)](https://github.com/J1M-RYAN/typify/actions?query=workflow%3Arust)
  [![Frontend Build Status](https://github.com/J1M-RYAN/typify/workflows/frontend/badge.svg)](https://github.com/J1M-RYAN/typify/actions?query=workflow%3Afrontend)
 
-A web app to help me practice typing common English words [Live App](https://j1m-ryan.github.io/typify/)  
+A web app to help me practice typing common English words
 
 ![](images/program.gif)  
 ### :computer: Frontend installation
@@ -18,6 +18,9 @@ To compile the backend you need rust / cargo nightly.
 rustup toolchain install nightly
 rustup default nightly
 ```
+You must also generate some ssl certs and put them in the ssl directory,
+Just run the `gen_certs.sh` file.
+
 Api Documentation is [here](rust-backend/api_docs.md)
 
 ### :keyboard: Full stack usage

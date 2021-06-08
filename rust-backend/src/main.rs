@@ -44,9 +44,6 @@ fn main() -> Result<(), Box<dyn std::error::Error>>{
         .allowed_origins(AllowedOrigins::All)
         .send_wildcard(true).to_cors().unwrap();
 
-    let security_policy = SpaceHelmet::default()
-    .enable(rocket_contrib::helmet::Hsts::default());
-
     rocket::ignite() 
     .manage(cors)
     .mount("/", routes![
