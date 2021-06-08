@@ -41,11 +41,15 @@ RUN yarn install
 RUN yarn build
 
 # ====== BUILD BACKEND ======
-COPY ./rust-backend /typify/rust-backend
+COPY ./rust-backend/src /typify/rust-backend/src
+COPY ./rust-backend/Cargo.toml /typify/rust-backend/Cargo.toml
 # cd into rust-backend folder
 WORKDIR /typify/rust-backend
 RUN cargo +nightly build --release
-RUN ./gen_cert.sh
+COPY ./rust-backend/ssl /typify/rust-backend/ssl
+COPY ./rust-backend/typify.sqlite /typify/rust-backend/typify.sqlite
+COPY ./rust-backend/Rocket.toml /typify/rust-backend/Rocket.toml
+RUN (cd ./ssl; ./gen_cert.sh)
 
 # ====== PUT BUILT FILES IN NEW IMAGE ======
 FROM ubuntu
@@ -60,9 +64,10 @@ WORKDIR /typify
 COPY --from=builder /typify/rust-backend/target/release/rust-backend .
 COPY --from=builder /typify/rust-backend/typify.sqlite .
 COPY --from=builder /typify/rust-backend/Rocket.toml .
-COPY --from=builder /typify/rust-backend/server.* ./
+RUN ["mkdir", "ssl"]
+COPY --from=builder /typify/rust-backend/ssl/*.pem ./ssl/
 COPY --from=builder /typify/frontend/build ./public/
 RUN chmod +x rust-backend
 # run backend
-#CMD /bin/bash
-CMD ROCKET_ADDRESS=$(hostname -i) /typify/rust-backend
+CMD /bin/bash
+#CMD ROCKET_ADDRESS=$(hostname -i) /typify/rust-backend

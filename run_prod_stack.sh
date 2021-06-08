@@ -1,3 +1,3 @@
 #!/bin/bash
-sudo docker build -t typify .
-sudo docker run -it -p 127.0.0.1:443:443 typify
+sudo docker build -t typifyapp/typify:latest .
+sudo docker run -it -p 127.0.0.1:443:443 typifyapp/typify

@@ -21,5 +21,5 @@ read_timeout = 5
 write_timeout = 5
 log = "normal"
 secret_key = "E19fSEJwDP/PlL+mD6Zz87p/IU7+DY20ipEJFrOsysM="
-tls = { key = "server.key", certs = "server.crt" }
+tls = { key = "ssl/privkey.pem", certs = "ssl/fullchain.pem" }
 #limits = { forms = 32768 }
