@@ -69,5 +69,5 @@ COPY --from=builder /typify/rust-backend/ssl/*.pem ./ssl/
 COPY --from=builder /typify/frontend/build ./public/
 RUN chmod +x rust-backend
 # run backend
-CMD /bin/bash
-#CMD ROCKET_ADDRESS=$(hostname -i) /typify/rust-backend
+#CMD /bin/bash
+CMD ROCKET_ADDRESS=$(hostname -i) /typify/rust-backend

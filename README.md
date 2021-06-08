@@ -18,6 +18,9 @@ To compile the backend you need rust / cargo nightly.
 rustup toolchain install nightly
 rustup default nightly
 ```
+You must also generate some ssl certs and put them in the ssl directory,
+Just run the `gen_certs.sh` file.
+
 Api Documentation is [here](rust-backend/api_docs.md)
 
 ### :keyboard: Full stack usage
