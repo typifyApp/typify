@@ -55,14 +55,13 @@ fn main() -> Result<(), Box<dyn std::error::Error>>{
     ])
     .mount("/", static_file_dir)
     .attach(SQLiteConnection::fairing())
-    .attach(security_policy)
-    .attach(AdHoc::on_attach("Secret Key", |rocket| {
+    /* .attach(AdHoc::on_attach("Secret Key", |rocket| {
         let assets_dir = rocket.config()
             .get_str("key")
             .unwrap()
             .to_string();
         Ok(rocket.manage(models::state::SecretKey(String::from(assets_dir))))
-    }))
+    }))*/
     .launch();
     Ok(())
 }

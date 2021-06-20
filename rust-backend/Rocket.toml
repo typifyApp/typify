@@ -8,7 +8,7 @@ workers = 24
 keep_alive = 5
 read_timeout = 5
 write_timeout = 5
-secret_key = "E19fSEJwDP/PlL+mD6Zz87p/IU7+DY20ipEJFrOsysM="
+#secret_key = "E19fSEJwDP/PlL+mD6Zz87p/IU7+DY20ipEJFrOsysM="
 
 [production]
 address = "localhost"
