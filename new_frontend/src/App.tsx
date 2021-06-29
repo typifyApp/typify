@@ -1,18 +1,34 @@
 import { Box, Grid } from "@material-ui/core";
+import { useState } from "react";
+import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+import { defaultUserData, UserDataType } from "./contexts/UserContext";
+import UserContext from "./contexts/UserContext";
 import Header from "./components/Header";
 import TypingCard from "./components/TypingCard";
+import Login from "./components/Login";
+
 const App: React.FunctionComponent = () => {
+  const [userData, dispatch] = useState(defaultUserData);
   return (
-    <>
-      <Header />
-      <Box mt={4}>
-        <Grid container justify="center">
-          <Grid item xs={12} md={8} lg={6}>
-            <TypingCard />
+    <Router>
+      <UserContext.Provider value={[userData, dispatch]}>
+        <Header />
+        <Box mt={4}>
+          <Grid container justify="center">
+            <Grid item xs={12} md={8} lg={6}>
+              <Switch>
+                <Route path="/login">
+                  <Login />
+                </Route>
+                <Route path="/">
+                  <TypingCard />
+                </Route>
+              </Switch>
+            </Grid>
           </Grid>
-        </Grid>
-      </Box>
-    </>
+        </Box>
+      </UserContext.Provider>
+    </Router>
   );
 };
 

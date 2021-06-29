@@ -1,5 +1,8 @@
 import arrayShuffle from "array-shuffle";
 
-export function get20ShuffledWords(words: string[]): string[] {
-  return arrayShuffle(words).slice(0, 20);
+export function getNShuffledWords(words: string[], n: number): string[] {
+  if (n > words.length) {
+    alert("check the getNshuffledwords function");
+  }
+  return arrayShuffle(words).slice(0, n);
 }

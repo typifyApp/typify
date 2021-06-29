@@ -30,3 +30,7 @@
   animation-name: changeBackgroundColour;
   animation-iteration-count: infinite;
 }
+.t-key {
+  width: 50px;
+  height: auto;
+}
