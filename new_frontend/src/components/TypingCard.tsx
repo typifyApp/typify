@@ -14,21 +14,28 @@ import keyReducer, {
   defaultKeyState,
   handleKeyEvent,
 } from "../reducers/keyReducer";
-import UserContext from "../contexts/UserContext";
+import UserContext, { UserDataType } from "../contexts/UserContext";
+import { Redirect } from "react-router-dom";
 
-export interface TypingCardProps {}
+export interface TypingCardProps {
+  userData: UserDataType
+}
 
-const TypingCard: React.FunctionComponent<TypingCardProps> = () => {
+const TypingCard: React.FunctionComponent<TypingCardProps> = ({ userData }) => {
   const { header, subHeader, words } = mostPopularEnglishWords;
   const [keyState, keyDispatch] = useReducer(keyReducer, defaultKeyState);
   const numWords = 20;
-
+  const { loggedIn, skippedLogin } = userData;
+  if (!loggedIn && !skippedLogin) {
+    return <Redirect to="/login" />
+  }
   useEffect(() => {
     keyDispatch({
       type: "UpdateWords",
       payload: getNShuffledWords(words, numWords),
     });
   }, []);
+
 
   return (
     <Card>

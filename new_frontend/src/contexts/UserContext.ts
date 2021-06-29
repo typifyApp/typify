@@ -1,4 +1,4 @@
-import { createContext, useState } from "react";
+import { createContext } from "react";
 export type UserDataType = {
   username: string;
   password: string;

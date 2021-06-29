@@ -23,7 +23,9 @@ const App: React.FunctionComponent = () => {
                   <Login />
                 </Route>
                 <Route path="/">
-                  <TypingCard />
+                  <UserContext.Consumer>
+                    {([userData]) => <TypingCard userData={userData} />}
+                  </UserContext.Consumer>
                 </Route>
               </Switch>
             </Grid>
