@@ -1,14 +1,16 @@
 import { Box, Grid } from "@material-ui/core";
 import { useState } from "react";
-import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
-import { defaultUserData, UserDataType } from "./contexts/UserContext";
+import { BrowserRouter as Router, Switch, Route, Redirect } from "react-router-dom";
+import { defaultUserData } from "./contexts/UserContext";
 import UserContext from "./contexts/UserContext";
 import Header from "./components/Header";
 import TypingCard from "./components/TypingCard";
 import Login from "./components/Login";
+import { useEffect } from "react";
 
 const App: React.FunctionComponent = () => {
   const [userData, dispatch] = useState(defaultUserData);
+
   return (
     <Router>
       <UserContext.Provider value={[userData, dispatch]}>
