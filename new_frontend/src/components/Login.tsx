@@ -20,11 +20,14 @@ const Login: React.FunctionComponent<LoginProps> = () => {
             <Grid container
               direction="row"
               justifyContent="center"
-              alignItems="center">
+              alignItems="center"
+              className="margin-bottom"
+
+            >
               <Grid item xs={12} md={6}>
-                <Box display="flex" flexDirection="column" alignContent="center" alignItems="center">
+                <Box display="flex" flexDirection="column" alignContent="center" alignItems="center" justifyContent="space-between" className="gap">
                   <Typography>Login with social Provider</Typography>
-                  <Button className="quite-wide google" variant="contained" color="primary" onClick={() => {
+                  <Button className="quite-wide" variant="contained" color="primary" onClick={() => {
                     dispatch({ ...userData, skippedLogin: true })
                   }}><GoogleIcon />Login with Google</Button>
                   <Button className="quite-wide" variant="contained" color="primary" onClick={() => {
@@ -32,16 +35,18 @@ const Login: React.FunctionComponent<LoginProps> = () => {
                   }}><GitHubIcon />Login with GitHub</Button>
                 </Box>
               </Grid>
-              <Grid item xs={12} md={6}><TextField required label="Username" value={userData.username} onChange={(e) => dispatch({ ...userData, username: e.target.value })} />
-                <TextField required label="Password" value={userData.password} onChange={(e) => dispatch({ ...userData, password: e.target.value })} type='password' />
-                <Button className="wide" variant="contained" color="primary" onClick={() => {
-                  dispatch({ ...userData, skippedLogin: true })
-                }}>Login</Button>
-                <Button className="wide" variant="contained" color="primary" onClick={() => {
-                  dispatch({ ...userData, skippedLogin: true })
-                }}>Skip login</Button>
+              <Grid item xs={12} md={6}>
+                <Box display="flex" flexDirection="column" alignContent="center" alignItems="center" className="gap">
+                  <TextField className="quite-wide" required label="Username" value={userData.username} onChange={(e) => dispatch({ ...userData, username: e.target.value })} variant="standard" />
+                  <TextField className="quite-wide" required label="Password" value={userData.password} onChange={(e) => dispatch({ ...userData, password: e.target.value })} variant="standard" type='password' />
+                  <Button className="quite-wide" variant="contained" color="primary" onClick={() => {
+                    dispatch({ ...userData, skippedLogin: true })
+                  }}>Login</Button>
+                  <Button className="quite-wide" variant="contained" color="primary" onClick={() => {
+                    dispatch({ ...userData, skippedLogin: true })
+                  }}>Register</Button>
+                </Box>
               </Grid>
-
             </Grid>
           </>
         }

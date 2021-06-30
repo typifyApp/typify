@@ -43,3 +43,10 @@
 .login-header {
   text-align: center;
 }
+.gap {
+  row-gap: 10px;
+  column-gap: 10px;
+}
+.margin-bottom {
+  margin-bottom: 10px;
+}
