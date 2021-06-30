@@ -6,8 +6,8 @@ import UserContext from "./contexts/UserContext";
 import Header from "./components/Header";
 import TypingCard from "./components/TypingCard";
 import Login from "./components/Login";
-import { useEffect } from "react";
-
+import ForgotPassword from "./components/ForgotPassword";
+import Register from "./components/Register"
 const App: React.FunctionComponent = () => {
   const [userData, dispatch] = useState(defaultUserData);
 
@@ -16,11 +16,17 @@ const App: React.FunctionComponent = () => {
       <UserContext.Provider value={[userData, dispatch]}>
         <Header />
         <Box mt={4}>
-          <Grid container justify="center">
+          <Grid container justifyContent="center">
             <Grid item xs={12} md={8} lg={6}>
               <Switch>
                 <Route path="/login">
                   <Login />
+                </Route>
+                <Route path="/forgotpassword">
+                  <ForgotPassword />
+                </Route>
+                <Route path="/register">
+                  <Register />
                 </Route>
                 <Route path="/">
                   <UserContext.Consumer>

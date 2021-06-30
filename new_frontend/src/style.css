@@ -34,3 +34,30 @@
   width: 50px;
   height: auto;
 }
+.wide {
+  width: 100%;
+}
+.quite-wide {
+  width: 90%;
+}
+.login-header {
+  text-align: center;
+}
+.gap {
+  row-gap: 10px;
+  column-gap: 10px;
+}
+.margin-bottom {
+  margin-bottom: 10px;
+}
+.or-text {
+  text-align: center;
+  padding-top: 20px;
+  padding-bottom: 10px;
+}
+.google:hover {
+  background-color: orange;
+}
+.grow {
+  flex-grow: 1;
+}

@@ -1,13 +1,15 @@
 import { createContext } from "react";
 export type UserDataType = {
   username: string;
+  email: string;
   password: string;
   loggedIn: boolean;
   skippedLogin: boolean;
 };
 //TODO finish usercontext
 export const defaultUserData: UserDataType = {
-  username: "jim",
+  username: "",
+  email: "",
   password: "",
   loggedIn: false,
   skippedLogin: false,
