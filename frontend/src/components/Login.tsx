@@ -10,9 +10,9 @@ import { styled } from '@material-ui/core/styles';
 import UserContext from '../contexts/UserContext';
 import GitHubIcon from '@material-ui/icons/GitHub';
 import GoogleIcon from '@material-ui/icons/Google';
-import { Formik } from 'formik';
 import Card from './Card';
 import { Redirect, Link } from 'react-router-dom';
+import { emailValidation, passwordValidation } from '../utils/validation';
 export interface LoginProps { }
 const SocialButton = styled(Button)({
   display: 'flex',
@@ -112,7 +112,7 @@ const Login: React.FunctionComponent<LoginProps> = () => {
                   flexDirection="column"
                   alignContent="center"
                   alignItems="center"
-                  className="gap"
+                  className="big-gap"
                 >
                   <Typography>Login with email and password</Typography>
                   <TextField
@@ -120,6 +120,17 @@ const Login: React.FunctionComponent<LoginProps> = () => {
                     required
                     label="Email"
                     value={userData.email}
+                    error={
+                      userData.email.length > 0 &&
+                      !emailValidation.isValid(userData.email)
+                    }
+                    helperText={
+                      emailValidation.isValid(userData.email)
+                        ? emailValidation.successText
+                        : userData.email.length === 0
+                          ? emailValidation.helperText
+                          : emailValidation.errorText
+                    }
                     onChange={(e) =>
                       dispatch({ ...userData, email: e.target.value })
                     }
@@ -130,6 +141,17 @@ const Login: React.FunctionComponent<LoginProps> = () => {
                     required
                     label="Password"
                     value={userData.password}
+                    error={
+                      userData.password.length > 0 &&
+                      !passwordValidation.isValid(userData.password)
+                    }
+                    helperText={
+                      passwordValidation.isValid(userData.password)
+                        ? passwordValidation.successText
+                        : userData.password.length === 0
+                          ? passwordValidation.helperText
+                          : passwordValidation.errorText
+                    }
                     onChange={(e) =>
                       dispatch({ ...userData, password: e.target.value })
                     }
@@ -137,6 +159,7 @@ const Login: React.FunctionComponent<LoginProps> = () => {
                     type="password"
                   />
                   <Button
+                    disabled={!emailValidation.isValid(userData.email) || !passwordValidation.isValid(userData.password)}
                     className="quite-wide"
                     variant="contained"
                     color="primary"
