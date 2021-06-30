@@ -6,7 +6,8 @@ import UserContext from "./contexts/UserContext";
 import Header from "./components/Header";
 import TypingCard from "./components/TypingCard";
 import Login from "./components/Login";
-
+import ForgotPassword from "./components/ForgotPassword";
+import Register from "./components/Register"
 const App: React.FunctionComponent = () => {
   const [userData, dispatch] = useState(defaultUserData);
 
@@ -20,6 +21,12 @@ const App: React.FunctionComponent = () => {
               <Switch>
                 <Route path="/login">
                   <Login />
+                </Route>
+                <Route path="/forgotpassword">
+                  <ForgotPassword />
+                </Route>
+                <Route path="/register">
+                  <Register />
                 </Route>
                 <Route path="/">
                   <UserContext.Consumer>

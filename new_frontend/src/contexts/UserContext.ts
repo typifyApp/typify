@@ -1,6 +1,7 @@
 import { createContext } from "react";
 export type UserDataType = {
   username: string;
+  email: string;
   password: string;
   loggedIn: boolean;
   skippedLogin: boolean;
@@ -8,6 +9,7 @@ export type UserDataType = {
 //TODO finish usercontext
 export const defaultUserData: UserDataType = {
   username: "",
+  email: "",
   password: "",
   loggedIn: false,
   skippedLogin: false,

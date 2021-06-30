@@ -39,19 +39,6 @@ const TypingCard: React.FunctionComponent<TypingCardProps> = ({ userData }) => {
   return (
     <Card>
       <CardHeader title={`${numWords} words`} subheader={subHeader} />
-      {/* <UserContext.Consumer>
-        {([userdata, dispatch]) => (
-          <>
-            <Typography>Username: {userdata.username}</Typography>
-            <input
-              value={userdata.username}
-              onChange={(e) =>
-                dispatch({ ...userdata, username: e.target.value })
-              }
-            />
-          </>
-        )}
-      </UserContext.Consumer> */}
       <CardContent>
         <TextContainer keyState={keyState} />
       </CardContent>

@@ -4,7 +4,7 @@ import GitHubIcon from '@material-ui/icons/GitHub';
 import GoogleIcon from '@material-ui/icons/Google';
 import { Formik } from "formik";
 import Card from "./Card";
-import { Redirect } from "react-router-dom";
+import { Redirect, Link } from "react-router-dom";
 export interface LoginProps {
 }
 
@@ -22,11 +22,10 @@ const Login: React.FunctionComponent<LoginProps> = () => {
               justifyContent="center"
               alignItems="center"
               className="margin-bottom"
-
             >
-              <Grid item xs={12} md={6}>
+              <Grid item xs={12} md={4}>
                 <Box display="flex" flexDirection="column" alignContent="center" alignItems="center" justifyContent="space-between" className="gap">
-                  <Typography>Login with social Provider</Typography>
+                  <Typography>Login with a social provider</Typography>
                   <Button className="quite-wide" variant="contained" color="primary" onClick={() => {
                     dispatch({ ...userData, skippedLogin: true })
                   }}><GoogleIcon />Login with Google</Button>
@@ -35,16 +34,27 @@ const Login: React.FunctionComponent<LoginProps> = () => {
                   }}><GitHubIcon />Login with GitHub</Button>
                 </Box>
               </Grid>
-              <Grid item xs={12} md={6}>
+              <Grid item xs={12} md={2}>
+                <Typography className="or-text">or</Typography>
+              </Grid>
+              <Grid item xs={12} md={4}>
                 <Box display="flex" flexDirection="column" alignContent="center" alignItems="center" className="gap">
-                  <TextField className="quite-wide" required label="Username" value={userData.username} onChange={(e) => dispatch({ ...userData, username: e.target.value })} variant="standard" />
+                  <Typography>Login with email and password</Typography>
+                  <TextField className="quite-wide" required label="Email" value={userData.email} onChange={(e) => dispatch({ ...userData, email: e.target.value })} variant="standard" />
                   <TextField className="quite-wide" required label="Password" value={userData.password} onChange={(e) => dispatch({ ...userData, password: e.target.value })} variant="standard" type='password' />
                   <Button className="quite-wide" variant="contained" color="primary" onClick={() => {
                     dispatch({ ...userData, skippedLogin: true })
                   }}>Login</Button>
-                  <Button className="quite-wide" variant="contained" color="primary" onClick={() => {
-                    dispatch({ ...userData, skippedLogin: true })
-                  }}>Register</Button>
+                  <Link to="/register" className="quite-wide">
+                    <Button className="wide" variant="contained" color="primary" onClick={() => {
+                      dispatch({ ...userData, skippedLogin: true })
+                    }}>Register</Button>
+                  </Link>
+                  <Link to="/forgotpassword" className="quite-wide">
+                    <Button className="wide" variant="contained" color="primary" onClick={() => {
+                      dispatch({ ...userData, skippedLogin: true })
+                    }}>Forgot Password</Button>
+                  </Link>
                 </Box>
               </Grid>
             </Grid>
