@@ -52,6 +52,8 @@
 }
 .or-text {
   text-align: center;
+  padding-top: 20px;
+  padding-bottom: 10px;
 }
 .google:hover {
   background-color: orange;

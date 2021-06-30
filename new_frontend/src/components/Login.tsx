@@ -63,7 +63,7 @@ const Login: React.FunctionComponent<LoginProps> = () => {
                 </Box>
               </Grid>
               <Grid item xs={12} md={2}>
-                <Typography className="or-text">or</Typography>
+                <Typography variant="subtitle2" className="or-text">or</Typography>
               </Grid>
               <Grid item xs={12} md={4}>
                 <Box display="flex" flexDirection="column" alignContent="center" alignItems="center" className="gap">
