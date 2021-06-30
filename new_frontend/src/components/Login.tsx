@@ -12,7 +12,8 @@ const SocialButton = styled(Button)({
   display: "flex",
   flexDirection: "row",
   alignContent: "space-between",
-  justifyContent: "space-between"
+  justifyContent: "space-between",
+  textAlign: "center"
 })
 
 const GoogleButton = styled(SocialButton)({
@@ -48,10 +49,17 @@ const Login: React.FunctionComponent<LoginProps> = () => {
                   <Typography>Login with a social provider</Typography>
                   <GoogleButton className="quite-wide google" variant="contained" color="primary" onClick={() => {
                     dispatch({ ...userData, skippedLogin: true })
-                  }}><GoogleIcon />Login with Google</GoogleButton>
+                  }}>
+                    <GoogleIcon />
+                    <Typography variant="button" className="grow">Login with Google</Typography>
+                  </GoogleButton>
                   <GitHubButton className="quite-wide" variant="contained" color="primary" onClick={() => {
                     dispatch({ ...userData, skippedLogin: true })
-                  }}><GitHubIcon />Login with GitHub</GitHubButton>
+                  }}>
+                    <GitHubIcon />
+                    <Typography variant="button" className="grow">Login with GitHub
+                    </Typography>
+                  </GitHubButton>
                 </Box>
               </Grid>
               <Grid item xs={12} md={2}>

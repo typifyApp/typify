@@ -56,3 +56,6 @@
 .google:hover {
   background-color: orange;
 }
+.grow {
+  flex-grow: 1;
+}
