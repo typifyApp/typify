@@ -1,4 +1,5 @@
 import { Button, Box, CardHeader, Grid, TextField, Typography } from "@material-ui/core";
+import { styled } from '@material-ui/core/styles';
 import UserContext from "../contexts/UserContext";
 import GitHubIcon from '@material-ui/icons/GitHub';
 import GoogleIcon from '@material-ui/icons/Google';
@@ -7,9 +8,28 @@ import Card from "./Card";
 import { Redirect, Link } from "react-router-dom";
 export interface LoginProps {
 }
+const SocialButton = styled(Button)({
+  display: "flex",
+  flexDirection: "row",
+  alignContent: "space-between",
+  justifyContent: "space-between"
+})
+
+const GoogleButton = styled(SocialButton)({
+  background: "#de5246",
+  '&:hover': {
+    background: "#ef6267"
+  }
+});
+
+const GitHubButton = styled(SocialButton)({
+  background: "#333",
+  '&:hover': {
+    background: "#555"
+  }
+})
 
 const Login: React.FunctionComponent<LoginProps> = () => {
-
   return (
     <Card>
       <UserContext.Consumer>
@@ -26,12 +46,12 @@ const Login: React.FunctionComponent<LoginProps> = () => {
               <Grid item xs={12} md={4}>
                 <Box display="flex" flexDirection="column" alignContent="center" alignItems="center" justifyContent="space-between" className="gap">
                   <Typography>Login with a social provider</Typography>
-                  <Button className="quite-wide" variant="contained" color="primary" onClick={() => {
+                  <GoogleButton className="quite-wide google" variant="contained" color="primary" onClick={() => {
                     dispatch({ ...userData, skippedLogin: true })
-                  }}><GoogleIcon />Login with Google</Button>
-                  <Button className="quite-wide" variant="contained" color="primary" onClick={() => {
+                  }}><GoogleIcon />Login with Google</GoogleButton>
+                  <GitHubButton className="quite-wide" variant="contained" color="primary" onClick={() => {
                     dispatch({ ...userData, skippedLogin: true })
-                  }}><GitHubIcon />Login with GitHub</Button>
+                  }}><GitHubIcon />Login with GitHub</GitHubButton>
                 </Box>
               </Grid>
               <Grid item xs={12} md={2}>
@@ -46,14 +66,10 @@ const Login: React.FunctionComponent<LoginProps> = () => {
                     dispatch({ ...userData, skippedLogin: true })
                   }}>Login</Button>
                   <Link to="/register" className="quite-wide">
-                    <Button className="wide" variant="contained" color="primary" onClick={() => {
-                      dispatch({ ...userData, skippedLogin: true })
-                    }}>Register</Button>
+                    <Button className="wide" variant="contained" color="primary">Register</Button>
                   </Link>
                   <Link to="/forgotpassword" className="quite-wide">
-                    <Button className="wide" variant="contained" color="primary" onClick={() => {
-                      dispatch({ ...userData, skippedLogin: true })
-                    }}>Forgot Password</Button>
+                    <Button className="wide" variant="contained" color="primary">Forgot Password</Button>
                   </Link>
                 </Box>
               </Grid>
