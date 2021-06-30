@@ -34,3 +34,12 @@
   width: 50px;
   height: auto;
 }
+.wide {
+  width: 100%;
+}
+.quite-wide {
+  width: 90%;
+}
+.login-header {
+  text-align: center;
+}

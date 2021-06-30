@@ -7,7 +7,7 @@ export type UserDataType = {
 };
 //TODO finish usercontext
 export const defaultUserData: UserDataType = {
-  username: "jim",
+  username: "",
   password: "",
   loggedIn: false,
   skippedLogin: false,

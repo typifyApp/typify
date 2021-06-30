@@ -2,7 +2,6 @@ import {
   CardContent,
   CardActionArea,
   CardHeader,
-  Typography,
 } from "@material-ui/core";
 import Card from "./Card";
 import TextContainer from "./TextContainer";
@@ -14,7 +13,7 @@ import keyReducer, {
   defaultKeyState,
   handleKeyEvent,
 } from "../reducers/keyReducer";
-import UserContext, { UserDataType } from "../contexts/UserContext";
+import { UserDataType } from "../contexts/UserContext";
 import { Redirect } from "react-router-dom";
 
 export interface TypingCardProps {
