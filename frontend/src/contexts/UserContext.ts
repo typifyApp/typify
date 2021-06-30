@@ -3,6 +3,7 @@ export type UserDataType = {
   username: string;
   email: string;
   password: string;
+  repeatPassword: string;
   loggedIn: boolean;
   skippedLogin: boolean;
 };
@@ -11,6 +12,7 @@ export const defaultUserData: UserDataType = {
   username: "",
   email: "",
   password: "",
+  repeatPassword: "",
   loggedIn: false,
   skippedLogin: false,
 };
