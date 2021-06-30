@@ -1,9 +1,9 @@
 .title {
-  font-family: "Lobster", cursive;
+  font-family: 'Lobster', cursive;
 }
 
 .typing-card-text {
-  font-family: "Ubuntu Mono", monospace;
+  font-family: 'Ubuntu Mono', monospace;
   font-size: 30px;
   color: black;
 }
@@ -20,8 +20,8 @@
   }
 
   to {
-    background-color: rgba(255, 255, 255, 0);
-    color: darkslategrey;
+    background-color: rgb(255, 255, 255);
+    color: rgb(0, 0, 0);
   }
 }
 
@@ -60,4 +60,8 @@
 }
 .grow {
   flex-grow: 1;
+}
+.typify-logo {
+  height: 20px;
+  width: auto;
 }

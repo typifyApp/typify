@@ -1,10 +1,10 @@
 import { getNShuffledWords } from "../utils/wordUtils";
 
 type KeyActionType = {
-  type: "CorrectKeyPress" | "IncorrectKeyPress" | "FinishedSet";
+  type: "CorrectKeyPress" | "IncorrectKeyPress" | "FinishedSet" 
 };
 type UpdateWordsAction = {
-  type: "UpdateWords";
+  type: "UpdateWords"|"Reset";
   payload: string[];
 };
 export type KeyStateType = {
@@ -13,9 +13,10 @@ export type KeyStateType = {
   correctIndices: Set<number>;
   incorrectIndices: Set<number>;
   characterLength: number;
+  startedTyping: boolean,
 };
 
-type ComplexKeyActionType = KeyActionType | UpdateWordsAction;
+export type ComplexKeyActionType = KeyActionType | UpdateWordsAction;
 
 let correctIndices = new Set<number>();
 let incorrectIndices = new Set<number>();
@@ -26,6 +27,7 @@ export const defaultKeyState: KeyStateType = {
   correctIndices: correctIndices,
   incorrectIndices: incorrectIndices,
   characterLength: 0,
+  startedTyping: false,
 };
 const keyReducer = (state: KeyStateType, action: ComplexKeyActionType) => {
   switch (action.type) {
@@ -34,10 +36,11 @@ const keyReducer = (state: KeyStateType, action: ComplexKeyActionType) => {
       return {
         ...state,
         currentIndex: state.currentIndex + 1,
+        startedTyping: true
       };
     case "IncorrectKeyPress":
       state.incorrectIndices.add(state.currentIndex);
-      return { ...state };
+      return { ...state,startedTyping: true };
     case "UpdateWords":
       return {
         ...state,
@@ -51,6 +54,14 @@ const keyReducer = (state: KeyStateType, action: ComplexKeyActionType) => {
         correctIndices: new Set<number>(),
         incorrectIndices: new Set<number>(),
       };
+    case "Reset":
+      return {
+        ...defaultKeyState,
+        words: action.payload,
+        characterLength: action.payload.join(" ").length,
+        correctIndices: new Set<number>(),
+        incorrectIndices: new Set<number>(),
+      }
     default:
       return state;
   }
