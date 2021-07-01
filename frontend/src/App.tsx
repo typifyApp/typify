@@ -13,6 +13,7 @@ import TypingCard from './components/TypingCard';
 import Login from './components/Login';
 import ForgotPassword from './components/ForgotPassword';
 import Register from './components/Register';
+import NewPassword from './components/NewPassword';
 const App: React.FunctionComponent = () => {
   const [userData, dispatch] = useState(defaultUserData);
 
@@ -32,6 +33,9 @@ const App: React.FunctionComponent = () => {
                 </Route>
                 <Route path="/register">
                   <Register />
+                </Route>
+                <Route path="/newpassword/:code">
+                  <NewPassword />
                 </Route>
                 <Route path="/">
                   <UserContext.Consumer>
