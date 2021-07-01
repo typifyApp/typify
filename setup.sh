@@ -5,7 +5,7 @@
 if command -v pacman &> /dev/null; then
     sudo pacman -S openssl sqlite3 --noconfirm
 elif command -v dnf &> /dev/null; then
-    sudo dnf install openssl openssl-dev sqlite-devel --assumeyes
+    sudo dnf install openssl openssl-devel sqlite-devel --assumeyes
 else
     echo "Your pacackge manager is not supported yet";
     exit 1;
