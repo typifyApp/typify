@@ -34,7 +34,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>>{
     
     let static_file_dir = if cfg!(debug_assertions) {
         simple_logging::log_to_stderr(LevelFilter::Info);
-        StaticFiles::from("../frontend/build")
+        StaticFiles::from("../new_frontend/dist")
     } else {
         simple_logging::log_to_stderr(LevelFilter::Warn);
         StaticFiles::from("public")
