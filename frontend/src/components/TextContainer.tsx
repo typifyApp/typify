@@ -1,35 +1,35 @@
-import Text from "./Text";
-import { KeyStateType } from "~/reducers/keyReducer";
+import Text from './Text';
+import { KeyStateType } from '~/reducers/keyReducer';
 export interface TextContainerProps {
   keyState: KeyStateType;
 }
 
 const TextContainer: React.FunctionComponent<TextContainerProps> = ({
-  keyState,
+  keyState
 }) => {
   const { words, currentIndex, correctIndices, incorrectIndices } = keyState;
   return (
     <Text>
       {words
-        .join("␣")
-        .split("")
+        .join('␣')
+        .split('')
         .map((char, i) => (
           <span
             key={i}
             className={`${
               incorrectIndices.has(i)
                 ? i === currentIndex
-                  ? "text-wrong currentKey"
-                  : "text-wrong"
+                  ? 'text-wrong currentKey'
+                  : 'text-wrong'
                 : i === currentIndex
-                ? "currentKey"
+                ? 'currentKey'
                 : correctIndices.has(i)
-                ? "text-typed"
-                : ""
+                ? 'text-typed'
+                : ''
             }`}
           >
             {char}
-            {char === "␣" && <wbr />}
+            {char === '␣' && <wbr />}
           </span>
         ))}
     </Text>

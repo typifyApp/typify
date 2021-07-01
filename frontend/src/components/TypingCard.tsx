@@ -1,9 +1,4 @@
-import {
-  CardContent,
-  CardActionArea,
-  CardHeader,
-  Button
-} from '@material-ui/core';
+import { Box, CardContent, CardHeader } from '@material-ui/core';
 import Card from './Card';
 import TextContainer from './TextContainer';
 import mostPopularEnglishWords from '../dev-utils/words';
@@ -18,6 +13,7 @@ import { UserDataType } from '../contexts/UserContext';
 import { Redirect } from 'react-router-dom';
 import TypifyLogo from './TypifyLogo';
 import ResetButton from './ResetButton';
+import PageVisibility from 'react-page-visibility';
 export interface TypingCardProps {
   userData: UserDataType;
 }
@@ -38,39 +34,53 @@ const TypingCard: React.FunctionComponent<TypingCardProps> = ({ userData }) => {
   }, []);
 
   return (
-    <Card>
-      <CardHeader
-        title={`${numWords} words`}
-        subheader={subHeader}
-        action={
-          keyState.startedTyping ? (
-            <>
+    <PageVisibility
+      onChange={() =>
+        keyDispatch({
+          type: 'Reset',
+          payload: getNShuffledWords(words, numWords)
+        })
+      }
+    >
+      <Card>
+        <CardHeader
+          title={`${numWords} words`}
+          subheader={subHeader}
+          action={
+            keyState.startedTyping ? (
+              <Box
+                display="flex"
+                justifyContent="center"
+                alignItems="center"
+                justifyItems="center"
+              >
+                <ResetButton
+                  words={words}
+                  keyDispatch={keyDispatch}
+                  numWords={numWords}
+                />
+                <TypifyLogo />
+              </Box>
+            ) : (
               <ResetButton
                 words={words}
                 keyDispatch={keyDispatch}
                 numWords={numWords}
               />
-              <TypifyLogo />
-            </>
-          ) : (
-            <ResetButton
-              words={words}
-              keyDispatch={keyDispatch}
-              numWords={numWords}
-            />
-          )
-        }
-      />
-      <CardContent>
-        <TextContainer keyState={keyState} />
-      </CardContent>
-      <KeyboardEventHandler
-        handleKeys={['alphabetic', 'space', 'enter']}
-        onKeyEvent={(key, e) => {
-          handleKeyEvent(keyState, keyDispatch, key, words);
-        }}
-      />
-    </Card>
+            )
+          }
+        />
+        <CardContent>
+          <TextContainer keyState={keyState} />
+        </CardContent>
+        <KeyboardEventHandler
+          handleKeys={['alphabetic', 'space', 'enter']}
+          onKeyEvent={(key, e) => {
+            handleKeyEvent(keyState, keyDispatch, key, words);
+          }}
+        />
+      </Card>
+    </PageVisibility>
   );
 };
 

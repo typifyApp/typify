@@ -10,6 +10,8 @@ import { styled } from '@material-ui/core/styles';
 import UserContext from '../contexts/UserContext';
 import GitHubIcon from '@material-ui/icons/GitHub';
 import GoogleIcon from '@material-ui/icons/Google';
+import AppleIcon from "@material-ui/icons/Apple";
+import TwitterIcon from "@material-ui/icons/Twitter"
 import Card from './Card';
 import { Redirect, Link } from 'react-router-dom';
 import { emailValidation, passwordValidation } from '../utils/validation';
@@ -35,6 +37,20 @@ const GitHubButton = styled(SocialButton)({
     background: '#555'
   }
 });
+
+const AppleButton = styled(SocialButton)({
+  background: '#A2AAAD',
+  '&:hover': {
+    background: '#B3BBBE'
+  }
+})
+
+const TwitterButton = styled(SocialButton)({
+  background: '#1DA1F2',
+  '&:hover': {
+    background: '#2EB2F3'
+  }
+})
 
 const Login: React.FunctionComponent<LoginProps> = () => {
   return (
@@ -70,11 +86,37 @@ const Login: React.FunctionComponent<LoginProps> = () => {
                   alignContent="center"
                   alignItems="center"
                   justifyContent="space-between"
-                  className="gap"
+                  className="big-gap"
                 >
                   <Typography>Login with a social provider</Typography>
+                  <AppleButton
+                    className="quite-wide"
+                    variant="contained"
+                    color="primary"
+                    onClick={() => {
+                      dispatch({ ...userData, skippedLogin: true });
+                    }}
+                  >
+                    <AppleIcon />
+                    <Typography variant="button" className="grow">
+                      Login with Apple
+                    </Typography>
+                  </AppleButton>
+                  <TwitterButton
+                    className="quite-wide"
+                    variant="contained"
+                    color="primary"
+                    onClick={() => {
+                      dispatch({ ...userData, skippedLogin: true });
+                    }}
+                  >
+                    <TwitterIcon />
+                    <Typography variant="button" className="grow">
+                      Login with Twitter
+                    </Typography>
+                  </TwitterButton>
                   <GoogleButton
-                    className="quite-wide google"
+                    className="quite-wide"
                     variant="contained"
                     color="primary"
                     onClick={() => {
