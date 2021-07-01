@@ -2,18 +2,24 @@
 # ============ Install required packages ============
 
 # Distro specific stuff
-if [ command -v pacman >& /dev/null ]; then
-    sudo pacman -S openssl sqlite3
-else [ command -v dnf >& /dev/null ];
+if command -v pacman &> /dev/null; then
+    sudo pacman -S openssl sqlite3 --noconfirm
+elif command -v dnf &> /dev/null; then
+    sudo dnf install openssl openssl-dev sqlite-devel --assumeyes
+else
+    echo "Your pacackge manager is not supported yet";
+    exit 1;
 fi
 # ============ Frontend ============
 
 # ============ Backend ============
 
 # Install rustup
-if [ ! command -v rustup >& /dev/null ]; then
+if ! command -v rustup &> /dev/null; then
+    echo "Installing rustup..."
     curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
     rustup toolchain install nightly
+    source $HOME/.cargo/env
 fi
 
 echo "============Setting up frontend...============"
