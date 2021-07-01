@@ -1,62 +1,34 @@
 {
-  "name": "frontend",
-  "version": "0.1.0",
-  "private": true,
-  "homepage": "http://localhost:8000/",
-  "proxy": "https://127.0.0.1/",
+  "name": "new_frontend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "build/index.html",
+  "scripts": {
+    "build": "parcel build src/index.html --public-url ./",
+    "dev": "parcel src/index.html"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/react": "^17.0.11",
+    "@types/react-dom": "^17.0.8",
+    "@types/react-keyboard-event-handler": "^1.5.0",
+    "@types/react-page-visibility": "^6.4.0",
+    "@types/react-router-dom": "^5.1.7",
+    "parcel": "^2.0.0-beta.2",
+    "typescript": "^4.3.4"
+  },
   "dependencies": {
-    "@material-ui/core": "^4.11.4",
-    "@material-ui/icons": "^4.11.2",
-    "@testing-library/jest-dom": "^5.11.4",
-    "@testing-library/react": "^11.1.0",
-    "@testing-library/user-event": "^12.1.10",
+    "@emotion/react": "^11.4.0",
+    "@emotion/styled": "^11.3.0",
+    "@material-ui/core": "^5.0.0-alpha.38",
+    "@material-ui/icons": "^5.0.0-alpha.37",
     "array-shuffle": "^2.0.0",
-    "axios": "^0.21.1",
-    "prop-types": "^15.7.2",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-keyboard-event-handler": "^1.5.4",
-    "react-material-ui-form-validator": "^2.1.4",
-    "react-scripts": "4.0.3",
-    "web-vitals": "^1.0.1"
-  },
-  "scripts": {
-    "predeploy": "npm run build",
-    "deploy": "gh-pages -d build",
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject",
-    "serve": "cd ../rust-backend; cargo run"
-  },
-  "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest"
-    ]
-  },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
-  },
-  "devDependencies": {
-    "@typescript-eslint/eslint-plugin": "^4.26.0",
-    "@typescript-eslint/parser": "^4.26.0",
-    "eslint": "^7.28.0",
-    "eslint-config-airbnb": "^18.2.1",
-    "eslint-config-react": "^1.1.7",
-    "eslint-plugin-import": "^2.23.4",
-    "eslint-plugin-jsx-a11y": "^6.4.1",
-    "eslint-plugin-react": "^7.24.0",
-    "eslint-plugin-react-hooks": "^4.2.0",
-    "gh-pages": "^3.1.0"
+    "react-page-visibility": "^6.4.0",
+    "react-router-dom": "^5.2.0"
   }
 }
