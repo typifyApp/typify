@@ -18,8 +18,8 @@ fi
 if ! command -v rustup &> /dev/null; then
     echo "Installing rustup..."
     curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
-    rustup toolchain install nightly
     source $HOME/.cargo/env
+    rustup toolchain install nightly
 fi
 
 echo "============Setting up frontend...============"
@@ -36,4 +36,5 @@ echo "============Setting up backend...============="
 )
 
 echo "Finished setup.";
+echo "RESTART YOUR SHELL PLEASE ( rust adds things to your path that you need )"
 exit 0;
