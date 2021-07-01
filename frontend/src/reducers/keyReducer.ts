@@ -1,10 +1,10 @@
-import { getNShuffledWords } from "../utils/wordUtils";
+import { getNShuffledWords, CHARACTERS_PER_WORD } from '../utils/wordUtils';
 
 type KeyActionType = {
-  type: "CorrectKeyPress" | "IncorrectKeyPress" | "FinishedSet" 
+  type: 'CorrectKeyPress' | 'IncorrectKeyPress' | 'FinishedSet';
 };
 type UpdateWordsAction = {
-  type: "UpdateWords"|"Reset";
+  type: 'UpdateWords' | 'Reset';
   payload: string[];
 };
 export type KeyStateType = {
@@ -13,7 +13,8 @@ export type KeyStateType = {
   correctIndices: Set<number>;
   incorrectIndices: Set<number>;
   characterLength: number;
-  startedTyping: boolean,
+  startedTyping: boolean;
+  startTime: Date;
 };
 
 export type ComplexKeyActionType = KeyActionType | UpdateWordsAction;
@@ -28,40 +29,57 @@ export const defaultKeyState: KeyStateType = {
   incorrectIndices: incorrectIndices,
   characterLength: 0,
   startedTyping: false,
+  startTime: new Date(),
 };
 const keyReducer = (state: KeyStateType, action: ComplexKeyActionType) => {
   switch (action.type) {
-    case "CorrectKeyPress":
+    case 'CorrectKeyPress':
       state.correctIndices.add(state.currentIndex);
-      return {
-        ...state,
-        currentIndex: state.currentIndex + 1,
-        startedTyping: true
-      };
-    case "IncorrectKeyPress":
-      state.incorrectIndices.add(state.currentIndex);
-      return { ...state,startedTyping: true };
-    case "UpdateWords":
-      return {
-        ...state,
-        words: action.payload,
-        characterLength: action.payload.join(" ").length,
-      };
-    case "FinishedSet":
-      console.log("current index is (reducder)", state.currentIndex);
-      return {
-        ...defaultKeyState,
-        correctIndices: new Set<number>(),
-        incorrectIndices: new Set<number>(),
-      };
-    case "Reset":
-      return {
-        ...defaultKeyState,
-        words: action.payload,
-        characterLength: action.payload.join(" ").length,
-        correctIndices: new Set<number>(),
-        incorrectIndices: new Set<number>(),
+      if (state.startedTyping) {
+        return { ...state, currentIndex: state.currentIndex + 1 };
+      } else {
+        return {
+          ...state,
+          startedTyping: true,
+          startTime: new Date(),
+          currentIndex: state.currentIndex + 1
+        };
       }
+
+    case 'IncorrectKeyPress':
+      state.incorrectIndices.add(state.currentIndex);
+      if (state.startedTyping) {
+        return { ...state };
+      } else {
+        return { ...state, startedTyping: true, startTime: new Date() };
+      }
+    case 'UpdateWords':
+      return {
+        ...state,
+        words: action.payload,
+        characterLength: action.payload.join(' ').length
+      };
+    case 'FinishedSet':
+      console.log('current index is (reducder)', state.currentIndex);
+      const endTime = new Date();
+      const millis = (endTime.getTime() - state.startTime.getTime());
+      const seconds = millis / 1000;
+      const wordsTyped = state.characterLength / CHARACTERS_PER_WORD;
+      const wpm = (wordsTyped / seconds) * 60;
+      alert(`WPM: ${wpm}`)
+      return {
+        ...defaultKeyState,
+        correctIndices: new Set<number>(),
+        incorrectIndices: new Set<number>(),
+      };
+    case 'Reset':
+      return {
+        ...defaultKeyState,
+        words: action.payload,
+        characterLength: action.payload.join(' ').length,
+        correctIndices: new Set<number>(),
+        incorrectIndices: new Set<number>()
+      };
     default:
       return state;
   }
@@ -73,21 +91,21 @@ export const handleKeyEvent = (
   allWords: string[]
 ) => {
   if (keyState.correctIndices.size + 1 === keyState.characterLength) {
-    keyDispatch({ type: "FinishedSet" });
+    keyDispatch({ type: 'FinishedSet' });
     keyDispatch({
-      type: "UpdateWords",
-      payload: getNShuffledWords(allWords, 20),
+      type: 'UpdateWords',
+      payload: getNShuffledWords(allWords, 20)
     });
     key;
   } else if (
-    key === "space" &&
-    " " === keyState.words.join(" ")[keyState.currentIndex]
+    key === 'space' &&
+    ' ' === keyState.words.join(' ')[keyState.currentIndex]
   ) {
-    keyDispatch({ type: "CorrectKeyPress" });
-  } else if (key === keyState.words.join(" ")[keyState.currentIndex]) {
-    keyDispatch({ type: "CorrectKeyPress" });
+    keyDispatch({ type: 'CorrectKeyPress' });
+  } else if (key === keyState.words.join(' ')[keyState.currentIndex]) {
+    keyDispatch({ type: 'CorrectKeyPress' });
   } else {
-    keyDispatch({ type: "IncorrectKeyPress" });
+    keyDispatch({ type: 'IncorrectKeyPress' });
   }
 };
 
